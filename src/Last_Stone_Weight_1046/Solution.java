@@ -16,25 +16,25 @@ public class Solution {
 
     public static int lastStoneWeight(int[] stones) {
 
-        List<Integer> stoneList = new ArrayList<>();
-        for (int i = 0; i < stones.length; i++) {
-            stoneList.add(stones[i]);
-        }
+        int size = stones.length;
         while (true){
-            if(stoneList.size()==1){
-                return stoneList.get(0);
-            }else if(stoneList.size()==0){
+            if(size==1){
+                return stones[0];
+            }else if(size==0){
                 return 0;
             }
-            Collections.sort(stoneList);
-            int stone1 = stoneList.remove(stoneList.size()-1);
-            int stone2 = stoneList.remove(stoneList.size()-1);
+            Arrays.sort(stones);
+            int stone1 = stones[size-1];
+            int stone2 = stones[size-2];
+            size -= 2;
             if(stone1>stone2){
                 stone1 -= stone2;
-                stoneList.add(stone1);
+                size++;
+                stones[size-1] = stone1;
             }else if(stone1<stone2){
                 stone2 -= stone1;
-                stoneList.add(stone2);
+                size++;
+                stones[size-1] = stone2;
             }
 
         }
