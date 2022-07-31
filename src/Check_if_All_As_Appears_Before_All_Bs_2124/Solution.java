@@ -12,10 +12,14 @@ public class Solution {
 
     public static boolean checkString(String s) {
 
-        if(s.contains("ba")){
-            return false;
+        char c1,c2;
+        for (int i = 0; i < s.length()-1; i++) {
+            c1 = s.charAt(i);
+            c2 = s.charAt(i+1);
+            if(c1=='b' && c2=='a'){
+                return false;
+            }
         }
-
         return  true;
     }
 
