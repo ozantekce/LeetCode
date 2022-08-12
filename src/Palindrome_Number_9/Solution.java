@@ -1,5 +1,7 @@
 package Palindrome_Number_9;
 
+import java.util.ArrayList;
+
 public class Solution {
 
 
@@ -7,11 +9,10 @@ public class Solution {
     public static void main(String[] args) {
 
         System.out.println(isPalindrome(-121));
-
+        System.out.println(isPalindrome2(12321));
 
 
     }
-
 
 
     public static boolean isPalindrome(int x) {
@@ -28,6 +29,31 @@ public class Solution {
             val*=10;
         }
         return x == val;
+    }
+
+
+    public static boolean isPalindrome2(int x) {
+
+        if(x<0)
+            return false;
+
+        char [] val = Integer.toString(x).toCharArray();
+
+        int first=0,last=val.length-1;
+        while (true){
+
+            if(first>=last){
+                break;
+            }
+            if(val[first]!= val[last]){
+                return false;
+            }
+
+            first++;
+            last--;
+
+        }
+        return true;
     }
 
 }
