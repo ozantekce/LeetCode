@@ -18,9 +18,7 @@ public class Solution {
 
         if(hour<dist.length-1)
             return -1;
-
         int maxSpeed = maxSpeed(dist,hour);
-        //System.out.println(maxSpeed);
         if(maxSpeed<=0){
             return -1;
         }
@@ -56,7 +54,6 @@ public class Solution {
     public static int maxSpeed(int []dist,double hour){
 
         double maxSpeed;
-
         int maxDistance=dist[0];
         for (int i = 1; i < dist.length; i++) {
             if(maxDistance<dist[i])
@@ -65,7 +62,7 @@ public class Solution {
 
         maxSpeed = maxDistance;
 
-        if(isValid(dist,hour, (long) maxSpeed)>=0){
+        if(isValid(dist,hour, (int) maxSpeed)>=0){
             return (int) maxSpeed;
         }else{
 
@@ -73,8 +70,6 @@ public class Solution {
             if(hour<=0)
                 return -1;
             maxSpeed =  Math.max(dist[dist.length-1],(dist[dist.length-1]*1l/hour));
-
-
             return (int) Math.ceil(maxSpeed);
         }
 
@@ -83,7 +78,7 @@ public class Solution {
 
 
     // 0 : valid, 1 : valid but high, -1 : low
-    public static int isValid(int[] dist, double hour,long speed){
+    public static int isValid(int[] dist, double hour,int speed){
 
         double time=0;
         //System.out.println("   " +speed);
@@ -91,7 +86,6 @@ public class Solution {
             double delta = Math.ceil(dist[i]*1d/speed);
             if(delta<1)
                 delta=1;
-
             //System.out.println(delta);
             time += delta;
         }
