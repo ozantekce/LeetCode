@@ -18,7 +18,7 @@ public class Solution {
 
     public static List<Integer> findDisappearedNumbers(int[] nums) {
 
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>(nums.length);
         Arrays.sort(nums);
         int pointer = 0;
         int val =1;
