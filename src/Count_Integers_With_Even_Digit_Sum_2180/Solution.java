@@ -1,7 +1,9 @@
+package Count_Integers_With_Even_Digit_Sum_2180;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public class Count_Integers_With_Even_Digit_Sum_2180 {
+public class Solution {
 
 
     public static void main(String[] args) {
