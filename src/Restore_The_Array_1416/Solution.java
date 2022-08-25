@@ -20,11 +20,10 @@ public class Solution {
 
         boolean stp = false;
         for (int i = 0; i < s.length(); i++) {
-
             sToInt[i] = s.charAt(i)-48;
             if(!stp){
-                BigInteger bi = new BigInteger(s.substring(0,i+1));
-                boolean c = i+1>10 || bi.longValue()>k;
+                long currentVal = Long.parseLong(s.substring(0,i+1));
+                boolean c = i+1>=10 || currentVal>k;
                 if(!c){
                     DP[i] = 1;
                 }else{
@@ -46,7 +45,7 @@ public class Solution {
                 addedValue *=10;
                 addedValue += sToInt[shift];
 
-                if(addedValue>k || (shift-i)>=11)
+                if(addedValue>k || (shift-i)>=10)
                     break;
                 //System.out.println("target: "+targetValue+" add:"+addedValue+" current :"+currentValue);
                 DP[shift] += DP[i];
