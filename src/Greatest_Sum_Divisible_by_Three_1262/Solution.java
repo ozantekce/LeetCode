@@ -1,9 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+package Greatest_Sum_Divisible_by_Three_1262;
 
-public class Greatest_Sum_Divisible_by_Three_1262 {
+public class Solution {
 
 
     public static void main(String[] args) {
