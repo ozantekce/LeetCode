@@ -28,24 +28,21 @@ public class Solution {
             threes++;
         }
 
-        int maxMul = 1;
+        int mul = 1;
         while (true){
 
-            int mul = (int) (Math.pow(2,twos)*Math.pow(3,threes));
-            if(mul>maxMul){
-                maxMul = mul;
-            }
             if(twos>=3){
                 twos--;
                 threes+=2;
                 twos-=2;
             }else {
+                mul = (int) (Math.pow(2,twos)*Math.pow(3,threes));
                 break;
             }
 
 
         }
-        return maxMul;
+        return mul;
     }
 
 
