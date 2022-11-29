@@ -42,9 +42,11 @@ public class Solution {
             DP[i][i] = true;
         }
         counter = n;
-
+        boolean allFalse1;
+        int allFalseCounter = 0;
         for (L = 2; L <= n; L++)
         {
+            allFalse1 = true;
             for (i = 0; i < n - L + 1; i++)
             {
                 j = i + L - 1;
@@ -52,16 +54,27 @@ public class Solution {
                     DP[i][j] = false;
                 }else{
                     if(i+1==j){
+                        allFalse1 = false;
                         DP[i][j] = true;
                         counter++;
                     }else{
                         if(DP[i+1][j-1]){
+                            allFalse1 = false;
                             DP[i][j] = true;
                             counter++;
                         }
                     }
                 }
 
+            }
+
+            if(allFalse1){
+                allFalseCounter++;
+            }else{
+                allFalseCounter =0;
+            }
+            if(allFalseCounter>=2){
+                break;
             }
         }
 
