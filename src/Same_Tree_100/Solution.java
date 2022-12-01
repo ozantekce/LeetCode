@@ -3,7 +3,7 @@ package Same_Tree_100;
 public class Solution {
 
     public static void main(String[] args) {
-        
+
     }
 
     public boolean isSameTree(TreeNode p, TreeNode q) {
