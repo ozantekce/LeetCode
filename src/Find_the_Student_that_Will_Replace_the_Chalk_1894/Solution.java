@@ -36,7 +36,7 @@ public class Solution {
                 }else if(sums[mid]>remainder) {
                     high = mid-1;
                 }else{
-                    return mid;
+                    return mid+1;
                 }
             }
             return low;
