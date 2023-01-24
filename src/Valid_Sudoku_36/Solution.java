@@ -14,28 +14,28 @@ public class Solution {
     public static boolean isValidSudoku(char[][] board) {
 
         char dot = '.';
-        List<Character>[] cols = new ArrayList[9];
-        List<Character>[] sqrs = new ArrayList[9];
+        Checker[] cols = new Checker[9];
+        Checker[] sqrs = new Checker[9];
 
-        List<Character> row = new ArrayList<>(9);
+        Checker row = new Checker();
         for (int i = 0; i < 9; i++) {
             row.clear();
             for (int j = 0; j < 9; j++) {
                 if(board[i][j]!=dot){
-                    int r = i;
-                    int c = j;
-                    int s = squares[r][c];
 
-                    if (row.contains(board[i][j])){return false;}
-                    else{row.add(board[i][j]);}
+                    int s = squares[i][j];
+                    int val = (board[i][j]-49);
+                    if(!row.add(val)){
+                        return false;
+                    }
 
-                    if(cols[c]==null){cols[c] = new ArrayList<>(9); cols[c].add(board[i][j]);}
-                    else if (cols[c].contains(board[i][j])){return false;}
-                    else{cols[c].add(board[i][j]);}
+                    if(cols[j]==null){cols[j] = new Checker();}
+                    if(!cols[j].add(val))
+                        return false;
 
-                    if(sqrs[s]==null){sqrs[s] = new ArrayList<>(9); sqrs[s].add(board[i][j]);}
-                    else if (sqrs[s].contains(board[i][j])){return false;}
-                    else{sqrs[s].add(board[i][j]);}
+                    if(sqrs[s]==null){sqrs[s] = new Checker();}
+                    if(!sqrs[s].add(val))
+                        return false;
                 }
             }
 
@@ -79,6 +79,28 @@ public class Solution {
     }
 
 
+    private static class Checker{
+
+        boolean [] values;
+        public Checker(){
+            values = new boolean[9];
+        }
+
+        public boolean add(int val){
+            if(values[val])
+                return false;
+            values[val] = true;
+            return true;
+        }
+
+        public void clear(){
+            for (int i = 0; i < 9; i++) {
+                values[i] = false;
+            }
+        }
+
+
+    }
 
 
 }
