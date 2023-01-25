@@ -1,9 +1,6 @@
 package Sudoku_Solver_37;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Solution {
 
@@ -24,20 +21,20 @@ public class Solution {
 
     }
 
-    private static String initialString;
+    private static char [] initialString = new char[81];
 
     public static void solveSudoku(char[][] board) {
         Helper.Configurations();
 
-        initialString = "";
-        finalStr = "";
         isFound = false;
+        int index =0;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 char c = board[i][j];
                 if(c=='.')
                     c='0';
-                initialString+=c;
+                initialString[index]=c;
+                index++;
             }
         }
 
@@ -45,6 +42,7 @@ public class Solution {
         Thread [] threads = new Thread[count];
         Solver [] solvers = new Solver[count];
         boolean even = true;
+
         for (int i = 0; i < count; i++) {
             solvers[i] = new Solver();
             solvers[i].configurations(initialString,even);
@@ -67,10 +65,10 @@ public class Solution {
             }
             break;
         }
-        int index = 0;
+        index = 0;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board[i][j] = finalStr.charAt(index);
+                board[i][j] = finalStr[index];
                 index++;
             }
         }
@@ -92,7 +90,7 @@ public class Solution {
     }
 
 
-    private static String finalStr;
+    private static char[] finalStr = new char[81];
     private static boolean isFound;
     private synchronized static void SetFinalString(char[] str)
     {
@@ -100,7 +98,7 @@ public class Solution {
             return;
         }
         isFound = true;
-        finalStr = new String(str);
+        finalStr = Arrays.copyOf(str,str.length);
     }
 
     private static boolean Recursive(char[] str,int position,int[] array)
@@ -178,9 +176,9 @@ public class Solution {
         private boolean type;
         private int [] array = new int[]{1,2,3,4,5,6,7,8,9};
         private char [] str;
-        public void configurations(String initial,boolean type){
-            shuffle(array);
-            str = initial.toCharArray();
+        public void configurations(char[] initial,boolean type){
+            //shuffle(array);
+            str = Arrays.copyOf(initial,initial.length);
             this.type = type;
         }
 
@@ -218,16 +216,16 @@ public class Solution {
             isConfigured = true;
 
 
-            tranform2D_1D = new HashMap<Integer, HashMap<Integer, Integer>>();
-            tranform1D_2D = new HashMap<Integer, int[]>();
+            tranform2D_1D = new HashMap<>(9);
+            tranform1D_2D = new HashMap<>(81);
             for (int i = 0; i < 9; i++)
             {
-                tranform2D_1D.put(i, new HashMap<>());
+                tranform2D_1D.put(i, new HashMap<>(9));
             }
 
-            rows = new HashMap<Integer, Integer>();
-            cols = new HashMap<Integer, Integer>();
-            sqrs = new HashMap<Integer, Integer>();
+            rows = new HashMap<>(9);
+            cols = new HashMap<>(9);
+            sqrs = new HashMap<>(9);
 
 
             int[][] ss = new int[][]{
@@ -238,13 +236,13 @@ public class Solution {
                     new int[] {30, 31, 32, 39, 40, 41, 48, 49, 50},
                     new int[] {33, 34, 35, 42, 43, 44, 51, 52, 53},
                     new int[] {54, 55, 56, 63, 64, 65, 72, 73, 74},
-                    new int[]  {57, 58, 59, 66, 67, 68, 75, 76, 77},
+                    new int[] {57, 58, 59, 66, 67, 68, 75, 76, 77},
                     new int[] {60, 61, 62, 69, 70, 71, 78, 79, 80}
             };
 
-            rowValues = new HashMap<Integer, List<Integer>>();
-            colValues = new HashMap<Integer, List<Integer>>();
-            sqrValues = new HashMap<Integer, List<Integer>>();
+            rowValues = new HashMap<>(9);
+            colValues = new HashMap<>(9);
+            sqrValues = new HashMap<>(9);
 
             for (int i = 0; i < 9; i++)
             {
@@ -258,11 +256,11 @@ public class Solution {
                     rows.put(i,r);
                     cols.put(j,c);
 
-                    if (!rowValues.containsKey(r)){rowValues.put(r,new ArrayList<>());}
+                    if (!rowValues.containsKey(r)){rowValues.put(r,new ArrayList<>(9));}
                     rowValues.get(r).add(index);
-                    if (!colValues.containsKey(c)) { colValues.put(c, new ArrayList<>()); }
+                    if (!colValues.containsKey(c)) { colValues.put(c, new ArrayList<>(9)); }
                     colValues.get(c).add(index);
-                    if (!sqrValues.containsKey(s)) { sqrValues.put(s , new ArrayList<>()); }
+                    if (!sqrValues.containsKey(s)) { sqrValues.put(s , new ArrayList<>(9)); }
                     sqrValues.get(s).add(index);
 
                 }
