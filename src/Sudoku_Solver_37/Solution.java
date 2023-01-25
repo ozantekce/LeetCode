@@ -38,18 +38,14 @@ public class Solution {
             }
         }
 
-        int count = 2;
-        Thread [] threads = new Thread[count];
-        Solver [] solvers = new Solver[count];
-        boolean even = true;
-
-        for (int i = 0; i < count; i++) {
-            solvers[i] = new Solver();
-            solvers[i].configurations(initialString,even);
-            threads[i] = new Thread(solvers[i]);
-            threads[i].start();
-            even =!even;
-        }
+        Thread t1,t2;
+        Solver s1,s2;
+        s1 = new Solver(initialString,true);
+        s2 = new Solver(initialString,false);
+        t1 = new Thread(s1);
+        t2 = new Thread(s2);
+        t1.start();
+        t2.start();
 
         While:
         while (true){
@@ -58,12 +54,8 @@ public class Solution {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            for (int i = 0; i < count; i++) {
-                if(threads[i].isAlive()){
-                    continue While;
-                }
-            }
-            break;
+            if(!t1.isAlive()||!t2.isAlive())
+                break;
         }
         index = 0;
         for (int i = 0; i < 9; i++) {
@@ -75,20 +67,6 @@ public class Solution {
 
 
     }
-
-
-
-
-    private static void shuffle(int [] array){
-        Random rand = new Random();
-        for (int i = 0; i < array.length; i++) {
-            int randomIndexToSwap = rand.nextInt(array.length);
-            int temp = array[randomIndexToSwap];
-            array[randomIndexToSwap] = array[i];
-            array[i] = temp;
-        }
-    }
-
 
     private static char[] finalStr = new char[81];
     private static boolean isFound;
@@ -176,8 +154,7 @@ public class Solution {
         private boolean type;
         private int [] array = new int[]{1,2,3,4,5,6,7,8,9};
         private char [] str;
-        public void configurations(char[] initial,boolean type){
-            //shuffle(array);
+        public Solver(char[] initial,boolean type){
             str = Arrays.copyOf(initial,initial.length);
             this.type = type;
         }
