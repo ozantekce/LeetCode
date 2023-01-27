@@ -24,8 +24,6 @@ public class Solution {
         int recordStart = 0;
         int recordStop;
 
-        int stateStart = 0;
-        int stateOver =0;
 
         StringBuilder resultString = new StringBuilder();
 
