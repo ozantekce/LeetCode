@@ -16,13 +16,9 @@ public class Solution {
 
     }
 
-
-
     public static List<List<Integer>> subsets(int[] nums) {
-
         allLists.clear();
-        find(-1,nums,new ArrayList<>());
-
+        find(-1,nums,new ArrayList<>(10));
         return allLists;
     }
 
@@ -41,6 +37,5 @@ public class Solution {
         }
         allLists.add(nextList);
     }
-
 
 }
