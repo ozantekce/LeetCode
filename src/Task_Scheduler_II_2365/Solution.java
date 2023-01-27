@@ -1,6 +1,8 @@
+package Task_Scheduler_II_2365;
+
 import java.util.HashMap;
 
-public class Task_Scheduler_II_2365 {
+public class Solution {
 
 
 
