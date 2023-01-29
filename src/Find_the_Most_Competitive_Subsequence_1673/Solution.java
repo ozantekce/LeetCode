@@ -15,11 +15,8 @@ public class Solution {
 
         Stack<Integer> stack = new Stack<>();
         int maxRemove = nums.length-k;
-        UpFor:
         for (int i = 0; i < nums.length; i++) {
-            while (!stack.isEmpty() && maxRemove!=0 && nums[i]<stack.peek()
-            && stack.size()+nums.length-i>k
-            ){
+            while (!stack.isEmpty() && maxRemove!=0 && nums[i]<stack.peek()){
                 stack.pop();
                 maxRemove--;
             }
