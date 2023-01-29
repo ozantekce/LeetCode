@@ -13,7 +13,7 @@ public class Solution {
 
     public static int[] mostCompetitive(int[] nums, int k) {
 
-        Stack<Integer> stack = new Stack<>();
+        MyStack stack = new MyStack(nums.length);
         int maxRemove = nums.length-k;
         for (int i = 0; i < nums.length; i++) {
             while (!stack.isEmpty() && maxRemove!=0 && nums[i]<stack.peek()){
@@ -34,7 +34,35 @@ public class Solution {
         return result;
     }
 
-    
+    private static class MyStack{
+
+        int capacity;
+        int size = 0;
+        int [] array;
+        public MyStack(int capacity) {
+            this.capacity = capacity;
+            array = new int[capacity];
+        }
+
+        public int pop(){
+            size--;
+            return array[size];
+        }
+
+        public void push(int val){
+            size++;
+            array[size-1] = val;
+        }
+
+        public boolean isEmpty(){
+            return size==0;
+        }
+        public int peek(){
+            return array[size-1];
+        }
+
+    }
+
 
     /*
     public static int[] mostCompetitive(int[] nums, int k) {
