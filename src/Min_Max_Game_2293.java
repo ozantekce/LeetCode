@@ -10,16 +10,9 @@ public class Min_Max_Game_2293 {
     }
 
     public static int minMaxGame(int[] nums) {
-        
-        int n = nums.length;
-        int currentMin = nums[0];
-        int currentMax = nums[n/2];
-        for (int i = 1; i < n/2; i++) {
-            currentMin = Math.min(currentMin,nums[i]);
-            currentMax = Math.max(currentMax,nums[i+n/2]);
-        }
 
-        /*
+        int n = nums.length;
+
         while (n>1){
             boolean min = true;
             for (int i = 0; i < n; i+=2) {
@@ -33,8 +26,8 @@ public class Min_Max_Game_2293 {
             n/=2;
             //System.out.println(Arrays.toString(nums));
         }
-*/
-        return Math.min(currentMin,currentMax);
+
+        return nums[0];
     }
 
 }
