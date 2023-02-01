@@ -1,7 +1,7 @@
 package Count_Prefixes_of_a_Given_String_2255;
 
 public class Solution {
-    
+
 
     public static int countPrefixes(String[] words, String s) {
 
