@@ -15,16 +15,16 @@ public class Min_Max_Game_2293 {
 
         while (n>1){
             boolean min = true;
-            for (int i = 0; i < n; i+=2) {
+            for (int i = 0,j = 0; i < n; i+=2,j++) {
                 if(min){
-                    nums[i/2] = Math.min(nums[i],nums[i+1]);
+                    nums[j] = Math.min(nums[i],nums[i+1]);
+                    min = false;
                 }else{
-                    nums[i/2] = Math.max(nums[i],nums[i+1]);
+                    nums[j] = Math.max(nums[i],nums[i+1]);
+                    min = true;
                 }
-                min = !min;
             }
             n/=2;
-            //System.out.println(Arrays.toString(nums));
         }
 
         return nums[0];
