@@ -12,7 +12,7 @@ public class Solution {
             min = Math.min(min,nums[i]);
             max = Math.max(max,nums[i]);
         }
-        
+
 
         return gcdBySteinsAlgorithm(min,max);
     }
