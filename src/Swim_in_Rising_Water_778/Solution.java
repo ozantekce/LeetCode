@@ -40,11 +40,131 @@ public class Solution {
 
 
         System.out.println(swimInWater(grid));//
+        System.out.println(swimInWaterOld(grid));//
 
     }
 
 
     public static int swimInWater(int[][] grid) {
+
+        if(grid.length==1){
+            return grid[0][0];
+        }
+
+        Pair.pairs = new Pair[grid.length][grid.length];
+        Pair.grid = grid;
+
+        TreeSet<Pair> followQueue = new TreeSet<>();
+        followQueue.add(Pair.getPair(0,1));
+        followQueue.add(Pair.getPair(1,0));
+
+        Pair.getPair(0,0).removed = true;
+
+        Pair target = Pair.getPair(grid.length-1,grid.length-1);
+
+        int max = grid[0][0];
+        while (true){
+            Pair currentPair = followQueue.pollFirst();
+            currentPair.removed = true;
+
+            max = Math.max(currentPair.value,max);
+            if(currentPair == target)
+                break;
+            if(hasLeft(currentPair) && !Pair.getPair(currentPair.i, currentPair.j-1).removed){
+                Pair temp = Pair.getPair(currentPair.i, currentPair.j-1);
+                if(temp==target){
+                    max = Math.max(target.value,max);
+                    break;
+                }
+                followQueue.add(temp);
+            }
+            if(hasRight(currentPair)&& !Pair.getPair(currentPair.i, currentPair.j+1).removed){
+                Pair temp = Pair.getPair(currentPair.i, currentPair.j+1);
+                if(temp==target){
+                    max = Math.max(target.value,max);
+                    break;
+                }
+                followQueue.add(temp);
+            }
+
+            if(hasDown(currentPair)&& !Pair.getPair(currentPair.i+1, currentPair.j).removed){
+                Pair temp = Pair.getPair(currentPair.i+1, currentPair.j);
+                if(temp==target){
+                    max = Math.max(target.value,max);
+                    break;
+                }
+                followQueue.add(temp);
+            }
+
+            if(hasUp(currentPair)&& !Pair.getPair(currentPair.i-1, currentPair.j).removed){
+                Pair temp = Pair.getPair(currentPair.i-1, currentPair.j);
+                if(temp==target){
+                    max = Math.max(target.value,max);
+                    break;
+                }
+                followQueue.add(temp);
+            }
+
+        }
+
+
+        return max;
+    }
+
+    private static boolean hasLeft(Pair p){
+        return p.j-1>=0;
+    }
+    private static boolean hasRight(Pair p){
+        return p.j+1<Pair.grid.length;
+    }
+    private static boolean hasDown(Pair p){
+        return p.i+1<Pair.grid.length;
+    }
+    private static boolean hasUp(Pair p){
+        return p.i-1>=0;
+    }
+
+    private static class Pair implements Comparable<Pair>{
+
+        private int i;
+        private int j;
+        private int value;
+
+        public boolean removed;
+
+        public static int grid[][];
+        public static Pair [][] pairs;
+
+        private Pair(int i,int j){
+            this.i = i;
+            this.j = j;
+            value = grid[i][j];
+        }
+
+        public static Pair getPair(int i,int j){
+            if(pairs[i][j]!=null){
+                return pairs[i][j];
+            }else{
+                Pair p = new Pair(i,j);
+                pairs[i][j] = p;
+                return p;
+            }
+        }
+
+
+        @Override
+        public int compareTo(Pair o) {
+            if(this.value>o.value)return 1;
+            if(this.value<o.value)return -1;
+            return 0;
+        }
+    }
+
+
+
+
+
+    public static int swimInWaterOld(int[][] grid) {
 
         int [] gridArea = new int[grid.length* grid.length];
         for (int i = 0; i < grid.length; i++) {
