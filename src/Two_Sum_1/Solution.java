@@ -17,33 +17,47 @@ public class Solution {
 
     public static int[] twoSum(int[] nums, int target) {
 
-        Element[] elements = new Element[nums.length];
+        int[] copy = new int[nums.length];
         for (int i = 0; i <nums.length ; i++) {
-            elements[i] = new Element(nums[i],i);
+            copy[i] = nums[i];
         }
-
-        Arrays.sort(elements);
-
+        Arrays.sort(copy);
         int i=0;
-        int f=elements.length-1;
+        int f=copy.length-1;
         int sum;
+        int val1 = 0;
+        int val2 = 0;
         while (i!=f){
-            sum = elements[i].value+elements[f].value;
+            sum = copy[i]+copy[f];
             if(sum==target){
-                return new int[]{
-                        elements[i].seq
-                        ,elements[f].seq
-                };
+                val1 = copy[i];
+                val2 = copy[f];
+                break;
             }else if(sum<target){
                 i++;
             }else{
                 f--;
             }
-
         }
 
-        return null;
+        int [] rst = new int[2];
+        rst[0] = -1;
+        rst[1] = -1;
+        for (int j = 0; j < nums.length; j++) {
+            if(rst[0]==-1 && nums[j]==val1){
+                rst[0] = j;
+                if(rst[1]!=-1)
+                    break;
+            }
+            else if(rst[1]==-1 && nums[j]==val2){
+                rst[1] = j;
+                if(rst[0]!=-1)
+                    break;
+            }
 
+        }
+        Arrays.sort(rst);
+        return rst;
     }
 
 
