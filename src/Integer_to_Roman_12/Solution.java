@@ -36,12 +36,12 @@ public class Solution {
     StringBuffer stringBuffer = new StringBuffer();
 
     public String intToRoman(int num) {
-        stringBuffer.delete(0,stringBuffer.length());
+        stringBuffer = new StringBuffer();
 
         stringBuffer.append(types[0][num/1000]);
         stringBuffer.append(types[1][(num%1000)/100]);
         stringBuffer.append(types[2][(num%100)/10]);
-        stringBuffer.append(types[3][(num%10)/1]);
+        stringBuffer.append(types[3][(num % 10)]);
 
         return stringBuffer.toString();
     }
