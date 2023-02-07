@@ -11,22 +11,28 @@ public class Solution {
 
     }
 
+
     public static int reverse(int x) {
 
-
         boolean negative = x<0;
+
         if(negative)
             x*=-1;
-        long rst = 0;
-        Stack<Integer> stack = new Stack<>();
-        while(x>0){
-            stack.push(x%10);
-            x/=10;
+
+        // find size
+        int size = 0;
+        int temp = x;
+        while (temp>0){
+            size++;
+            temp/=10;
         }
-        int m =stack.size()-1;
-        for(int val : stack){
-            rst += val*Math.pow(10,m);
-            m--;
+
+        long rst = 0;
+        while(size>=0){
+            int c = x%10;
+            rst += c * Math.pow(10,size-1);
+            x/=10;
+            size--;
             if(rst>Integer.MAX_VALUE)
                 return 0;
             if(rst<Integer.MIN_VALUE)
@@ -34,9 +40,6 @@ public class Solution {
         }
         if(negative)
             rst *=-1;
-
-
-
         return (int) rst;
     }
 
