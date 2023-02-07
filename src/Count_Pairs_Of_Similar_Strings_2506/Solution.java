@@ -10,15 +10,7 @@ public class Solution {
 
 
         System.out.println(similarPairs(new String[]{"aaabbcc","abcdefghijklmnopqrstuvwxyz"}));
-
-//Runtime
-//2 ms
-//Beats
-//99.96%
-//Memory
-//41.5 MB
-//Beats
-//99.38%
+        
     }
 
 
