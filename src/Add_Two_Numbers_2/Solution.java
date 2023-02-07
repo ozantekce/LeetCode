@@ -1,9 +1,5 @@
 package Add_Two_Numbers_2;
 
-import javax.swing.*;
-import java.math.BigInteger;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 class ListNode {
       int val;
@@ -13,7 +9,6 @@ class ListNode {
       ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  }
 
-// Not a good solution must be change
 public class Solution {
 
     public static void main(String[] args) {
@@ -34,41 +29,52 @@ public class Solution {
 
         ListNode listNode1 = new ListNode(9);
 
-        System.out.println(solution.getVal(listNode));
-        System.out.println(solution.getVal(listNode1));
 
-        solution.addTwoNumbers(listNode1,listNode);
-
-        long durationInMs = TimeUnit.MILLISECONDS.convert((System.nanoTime()-start), TimeUnit.NANOSECONDS);
-        System.out.println(durationInMs+" ms ");
+        ListNode l = solution.addTwoNumbers(listNode1,listNode);
+        System.out.println(solution.getVal(l));
 
     }
 
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-        BigInteger v1 = new BigInteger(getVal(l1));
-        BigInteger v2 = new BigInteger(getVal(l2));
-
-        v1 = v1.add(v2);
-
-        StringBuffer sum = new StringBuffer(v1.toString());
-
-        System.out.println(sum);
+        int carry = 0;
         ListNode root = new ListNode();
         ListNode current = root;
-        for (int i = sum.length()-1; i >=0; i--) {
-            current.val = sum.charAt(i)-48;
-            if(i!=0) {
-                current.next = new ListNode();
-                current = current.next;
+
+        ListNode cl1 = l1;
+        ListNode cl2 = l2;
+
+        while (true){
+            int v1 = 0;
+            int v2 = 0;
+            if(cl1!=null){
+                v1 = cl1.val;
+                cl1 = cl1.next;
+            }
+            if(cl2!=null){
+                v2 = cl2.val;
+                cl2 = cl2.next;
+            }
+            int sum = v1+v2+carry;
+            carry = sum/10;
+            sum = sum%10;
+            current.val = sum;
+            if(cl1!=null || cl2!=null){
+                current = current.next = new ListNode();
+            }
+            else{
+                if(carry!=0){
+                    current.next = new ListNode(carry);
+                }
+                break;
             }
         }
 
-        System.out.println(getVal(root));
 
         return root;
     }
+
 
     public String getVal(ListNode l){
         if(l.next==null){
@@ -77,7 +83,6 @@ public class Solution {
             return getVal(l.next)+""+l.val;
         }
     }
-
 
 
 }
