@@ -67,52 +67,9 @@ public class Solution {
         }
         counter.put(str,value);
 
-        System.out.println(counter);
+        //System.out.println(counter);
 
         return rst;
     }
 
-
-
-
-    /*
-    public static String mostCommonWord(String paragraph, String[] banned) {
-
-        String[] words = paragraph.split(" ");
-
-        HashMap<String,Integer> counter = new HashMap<>();
-
-        for (int i = 0; i < words.length; i++) {
-            words[i] = words[i].toLowerCase();
-            words[i] = words[i].replaceAll("([!?',;.])","");
-            //System.out.println(words[i]);
-            counter.put(words[i],counter.getOrDefault(words[i],0)+1);
-
-        }
-        //System.out.println(counter);
-
-        int max = 0;
-        String result = "";
-        UpFor:
-        for(Map.Entry<String, Integer> entry : counter.entrySet()) {
-
-            int c = entry.getValue();
-            String str = entry.getKey();
-            for (int i = 0; i < banned.length; i++) {
-                if(str.equals(banned[i]))
-                    continue UpFor;
-            }
-
-            if(c>max){
-                max = c;
-                result = str;
-            }
-
-
-        }
-
-
-        return result;
-    }
-*/
 }
