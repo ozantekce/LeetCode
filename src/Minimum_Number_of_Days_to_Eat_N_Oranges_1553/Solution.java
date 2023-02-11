@@ -7,9 +7,9 @@ public class Solution {
 
     public static void main(String[] args) {
 
-        //System.out.println(minDays(10));
-        //System.out.println(minDays(6));
-        System.out.println(minDays(84806671));
+        System.out.println(minDays(10));        // 4
+        System.out.println(minDays(6));         // 3
+        System.out.println(minDays(84806671));  // 32
 
     }
 
@@ -17,7 +17,7 @@ public class Solution {
 
         Node root = new Node(0,n);
 
-        Queue<Node> queue = new ArrayDeque<>();
+        PriorityQueue<Node> queue = new PriorityQueue<>();
         queue.add(root);
 
         Set<Integer> set = new HashSet<>();
@@ -29,30 +29,24 @@ public class Solution {
             if(set.contains(current.value))
                 continue;
 
-            if(current.value==0){
-                return current.day;
+            if(current.value<2){
+                return current.day + current.value;
             }
 
             set.add(current.value);
 
-            boolean op2 = current.value % 2 == 0;
-            boolean op3 = current.value % 3 == 0;
+            int r2 = current.value % 2;
+            int r3 = current.value % 3;
 
-            queue.add(new Node(current.day+1, current.value-1));
-
-            if(op3){
-                queue.add(new Node(current.day+1, current.value/3));
-            }
-            if(op2){
-                queue.add(new Node(current.day+1, current.value/2));
-            }
+            queue.add(new Node(current.day+r3+1, current.value/3));
+            queue.add(new Node(current.day+r2+1, current.value/2));
 
         }
 
     }
 
 
-    private static class Node{
+    private static class Node implements Comparable<Node>{
 
         private int day;
         private int value;
@@ -61,6 +55,14 @@ public class Solution {
             this.day = day;
             this.value = value;
         }
-    }
 
+
+        @Override
+        public int compareTo(Node o) {
+
+            if(this.day>o.day)return 1;
+            else if(this.day<o.day)return -1;
+            else return 0;
+        }
+    }
 }
