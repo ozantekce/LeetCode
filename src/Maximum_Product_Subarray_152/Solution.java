@@ -16,6 +16,14 @@ public class Solution {
 
     public static int maxProduct(int[] nums) {
 
+        int mul = 1;
+        for (int i = 0; i < nums.length; i++) {
+            mul*=nums[i];
+        }
+        if(mul>0){
+            return mul;
+        }
+
         return maxSubarray(nums,0,nums.length-1);
     }
 
