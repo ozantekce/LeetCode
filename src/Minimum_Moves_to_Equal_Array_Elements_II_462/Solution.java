@@ -9,7 +9,7 @@ public class Solution {
 
         System.out.println(minMoves2(new int[]{1,2,3}));
         System.out.println(minMoves2(new int[]{1,10,2,9}));
-        
+
     }
 
     public static int minMoves2(int[] nums) {
