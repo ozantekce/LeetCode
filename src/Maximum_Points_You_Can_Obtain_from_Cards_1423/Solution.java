@@ -15,10 +15,28 @@ public class Solution {
         System.out.println(maxScore(new int[]{9,7,7,9,7,7,9},7));           //55
         System.out.println(maxScore(new int[]{100,40,17,9,73,75},3));       //248
         System.out.println(maxScore(new int[]{1,79,80,1,1,1,200,1},3));     //202
-        System.out.println(maxScore(new int[]{96,90,41,82,39,74,64,50,30},8));     //202
+        System.out.println(maxScore(new int[]{96,90,41,82,39,74,64,50,30},8));     //536
 
     }
 
+
+    public static int maxScore(int[] cardPoints, int k) {
+        int max;
+        int sum = 0;
+        for (int i = 0; i < k; i++) {
+            sum+=cardPoints[i];
+        }
+        max = sum;
+        for (int i = 0; i < k; i++) {
+            sum-=cardPoints[k-1-i];
+            sum+=cardPoints[cardPoints.length-1-i];
+            max =Math.max(max,sum);
+        }
+        return max;
+    }
+
+
+    /*
     public static int maxScore(int[] cardPoints, int k) {
 
         if(k==cardPoints.length){
@@ -52,7 +70,7 @@ public class Solution {
 
         return max;
     }
-
+*/
     /*
     public static int maxScore(int[] cardPoints, int k) {
 
