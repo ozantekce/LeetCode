@@ -7,15 +7,18 @@ public class Solution {
 
     public static void main(String[] args) {
 
-        //System.out.println(diffWaysToCompute("55+222-113-1"));
-        //System.out.println(diffWaysToCompute("2-1-1"));
-        //System.out.println(diffWaysToCompute("22-10-5"));
+        long start = System.nanoTime();
+        System.out.println(diffWaysToCompute("55+222-113-1"));
+        System.out.println(diffWaysToCompute("2-1-1"));
+        System.out.println(diffWaysToCompute("22-10-5"));
         System.out.println(diffWaysToCompute("2*3-4*5"));
         System.out.println(diffWaysToCompute("1-2+3*4-5*6-7+8*9"));
 
+        long end = System.nanoTime();
+
+        System.out.println("Time taken: " + ((end - start)/1000000d) + " ms");
 
     }
-
 
     private static final HashMap<String,Integer> TokenToInt = new HashMap<>();
 
@@ -70,7 +73,6 @@ public class Solution {
                 result.add(tokenToInt(current));
             }
         }
-
 
         return result;
     }
@@ -182,8 +184,11 @@ public class Solution {
         return resultBuilder.toString();
     }
 
+    private static final Set<Character> operations = Set.of('*', '/', '+', '-');
+
     public static boolean isOperation(char c){
-        return c == '*' || c== '/' || c == '+' || c=='-';
+        return operations.contains(c);
     }
+
 
 }
