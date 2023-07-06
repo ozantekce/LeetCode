@@ -4,10 +4,11 @@ import java.util.*;
 
 public class Solution2 {
 
-
     public static void main(String[] args) {
 
+
         long start = System.nanoTime();
+
         System.out.println(diffWaysToCompute("55+222-113-1"));
         System.out.println(diffWaysToCompute("2-1-1"));
         System.out.println(diffWaysToCompute("22-10-5"));
@@ -36,7 +37,7 @@ public class Solution2 {
             } else if(isOperation(c)) {
                 if (number.length() > 0) {
                     Numbers.add(Integer.parseInt(number.toString()));
-                    number = new StringBuilder();
+                    number.setLength(0);
                 }
                 Operations.add(c);
             }
@@ -57,10 +58,8 @@ public class Solution2 {
             return Memory[start][end];
         }
         if (start+1 == end) {
-            Memory[start][end] = executeOperation(
-                    Operations.get(start)
-                    , List.of(Numbers.get(start))
-                    , List.of(Numbers.get(end)));
+            Memory[start][end]
+                    = new ArrayList<>(List.of(executeOperation(Operations.get(start),Numbers.get(start),Numbers.get(end))));
             return Memory[start][end];
         }
 
@@ -104,6 +103,23 @@ public class Solution2 {
                     result.add(l1.get(i)/l2.get(j));
                 }
             }
+        }
+
+        return result;
+    }
+
+    public static int executeOperation(char op, int i1, int i2){
+
+        int result = i1;
+
+        if(op=='+'){
+            result +=i2 ;
+        }else if(op == '-'){
+            result -= i2 ;
+        }else if(op == '*'){
+            result *= i2 ;
+        }else{
+            result /= i2 ;
         }
 
         return result;
