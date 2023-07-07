@@ -1,5 +1,8 @@
 package Find_First_Palindromic_String_in_the_Array_2108;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class Solution {
 
 
@@ -13,36 +16,24 @@ public class Solution {
 
     public static String firstPalindrome(String[] words) {
 
-        for (int i = 0; i < words.length; i++) {
-            if(isPalindrome(words[i])){
-                return words[i];
+        for (String word : words) {
+            //check
+            boolean isPalindrome = true;
+            int first = 0, last = word.length() - 1;
+            while (first < last) {
+                if (word.charAt(first) != word.charAt(last)) {
+                    isPalindrome =  false;
+                    break;
+                }
+                first++;
+                last--;
+            }
+            if (isPalindrome) {
+                return word;
             }
         }
 
         return "";
-    }
-
-
-
-    public static boolean isPalindrome(String x) {
-
-        char [] val = x.toCharArray();
-
-        int first=0,last=val.length-1;
-        while (true){
-
-            if(first>=last){
-                break;
-            }
-            if(val[first]!= val[last]){
-                return false;
-            }
-
-            first++;
-            last--;
-
-        }
-        return true;
     }
 
 }
