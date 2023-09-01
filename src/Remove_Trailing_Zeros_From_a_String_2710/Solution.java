@@ -12,22 +12,20 @@ public class Solution {
 
     public static String removeTrailingZeros(String num) {
 
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(num);
 
-        boolean isOver = false;
-        for (int i = num.length()-1; i >= 0; i--) {
-
-            char c = num.charAt(i);
-
-            if(c != '0'){
-                isOver = true;
+        int removeSize = 0;
+        for (int i = 0; i < num.length(); i++) {
+            char c = stringBuilder.charAt(num.length()-1-i);
+            if(c=='0'){
+                removeSize++;
+            }else{
+                break;
             }
-            if(c == '0' && !isOver){
-                continue;
-            }
-            stringBuilder.append(c);
         }
-        stringBuilder.reverse();
+
+        stringBuilder.delete(num.length()-removeSize,num.length());
+
         return stringBuilder.toString();
     }
 
