@@ -12,11 +12,9 @@ public class Solution {
 
     public static String removeTrailingZeros(String num) {
 
-        StringBuilder stringBuilder = new StringBuilder(num);
-
         int removeSize = 0;
         for (int i = 0; i < num.length(); i++) {
-            char c = stringBuilder.charAt(num.length()-1-i);
+            char c = num.charAt(num.length()-1-i);
             if(c=='0'){
                 removeSize++;
             }else{
@@ -24,9 +22,7 @@ public class Solution {
             }
         }
 
-        stringBuilder.delete(num.length()-removeSize,num.length());
-
-        return stringBuilder.toString();
+        return num.substring(0,num.length()-removeSize);
     }
 
 
