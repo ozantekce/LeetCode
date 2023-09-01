@@ -22,25 +22,40 @@ public class Solution {
 
         char[] chars = s.toCharArray();
 
-        List<Integer> letters = new ArrayList<>();
-        Stack<Character> stack = new Stack<>();
+        int f = 0;
+        int l = s.length()-1;
 
-        for (int i = 0; i < chars.length; i++) {
+        while (f<l){
 
-            char c = chars[i];
-            if((c>=97 && c<=122) || (c>=65 && c<=90) ){
-                letters.add(i);
-                stack.add(c);
+            char f_c = chars[f];
+            char l_c = chars[l];
+
+            boolean f_c_l = isLetter(f_c);
+            boolean l_c_l = isLetter(l_c);
+
+            if(f_c_l && l_c_l){
+                chars[f] = l_c;
+                chars[l] = f_c;
+                f++;
+                l--;
+            }else if(f_c_l){
+                l--;
+            }else if(l_c_l){
+                f++;
+            }else{
+                f++;
+                l--;
             }
 
         }
 
-        for (int index : letters) {
-            char c = stack.pop();
-            chars[index] = c;
-        }
 
         return new String(chars);
+    }
+
+
+    private static boolean isLetter(char c){
+        return (c>=97 && c<=122) || (c>=65 && c<=90);
     }
 
 }
