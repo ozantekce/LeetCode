@@ -16,65 +16,38 @@ public class Solution {
 
 
     public static int maxNumberOfFamilies(int n, int[][] reservedSeats) {
-        
-        sortArray(reservedSeats);
+
+        HashMap<Integer,Integer> numbers = new HashMap<>();
+
+        for (int i = 0; i < reservedSeats.length; i++) {
+
+            int row = reservedSeats[i][0]-1;
+            int col = reservedSeats[i][1]-1;
+            numbers.put(row,setBinary(numbers.getOrDefault(row,0),col));
+        }
+
         int counter = 0;
-        int number;
-        int row = reservedSeats[0][0]-1;
-        int col = reservedSeats[0][1]-1;
-        int lastRow = row;
-        int remainder = n;
-        number = setBinary(0,col);
 
-        for (int i = 1; i < reservedSeats.length; i++) {
-
-            row = reservedSeats[i][0]-1;
-            col = reservedSeats[i][1]-1;
-            if(row != lastRow){
-                remainder--;
-                boolean cnt = false;
-                if(case0.contains(number)){
-                    counter++;
-                    cnt = true;
-                }
-                if(case1.contains(number)){
-                    counter++;
-                    cnt = true;
-                }
-                if(!cnt && case2.contains(number)){
-                    counter++;
-                }
-                number = 0;
+        for (int number : numbers.values()) {
+            boolean cnt = false;
+            if(case0.contains(number)){
+                counter++;
+                cnt = true;
             }
-            lastRow = row;
-            number = setBinary(number,col);
-
-        }
-        boolean cnt = false;
-        remainder--;
-        if(case0.contains(number)){
-            counter++;
-            cnt = true;
-        }
-        if(case1.contains(number)){
-            counter++;
-            cnt = true;
-        }
-        if(!cnt && case2.contains(number)){
-            counter++;
-        }
-
-        if(remainder<0)remainder=0;
-        return counter+ remainder*2;
-    }
-
-    public static void sortArray(int[][] arr) {
-        Arrays.sort(arr, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return Integer.compare(o1[0], o2[0]);
+            if(case1.contains(number)){
+                counter++;
+                cnt = true;
             }
-        });
+            if(cnt) continue;
+            if(case2.contains(number)){
+                counter++;
+            }
+
+        }
+
+        counter += 2 * (n - numbers.size());
+
+        return counter;
     }
 
     public static int setBinary(int number,int index){
