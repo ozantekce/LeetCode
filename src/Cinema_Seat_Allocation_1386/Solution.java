@@ -1,9 +1,6 @@
 package Cinema_Seat_Allocation_1386;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Solution {
 
@@ -19,9 +16,7 @@ public class Solution {
 
 
     public static int maxNumberOfFamilies(int n, int[][] reservedSeats) {
-
-        configuration();
-
+        
         sortArray(reservedSeats);
         int counter = 0;
         int number;
@@ -87,47 +82,45 @@ public class Solution {
         return number;
     }
 
-    private static boolean configurated = false;
     private static HashSet<Integer> case0 = new HashSet<>();
     private static HashSet<Integer> case1 = new HashSet<>();
     private static HashSet<Integer> case2 = new HashSet<>();
-    public static void configuration(){
-        if(configurated) return;
-        configurated = true;
+    static{
         for (int i = 0; i <= 1023; i++) {
 
-            StringBuilder binary = new StringBuilder(Integer.toBinaryString(i));
+            int [] binaryValues = new int[9];
+            binaryValues[1] = getBit(i,1);
+            binaryValues[2] = getBit(i,2);
+            binaryValues[3] = getBit(i,3);
+            binaryValues[4] = getBit(i,4);
+            binaryValues[5] = getBit(i,5);
+            binaryValues[6] = getBit(i,6);
+            binaryValues[7] = getBit(i,7);
+            binaryValues[8] = getBit(i,8);
 
-            while (binary.length() < 10) {
-                binary.insert(0, "0");
-            }
-
-            if(checkBinaryCase0(binary)){
+            if(binaryValues[1]==0 && binaryValues[2]==0
+                    && binaryValues[3]==0&& binaryValues[4]==0){
                 case0.add(i);
             }
-            if(checkBinaryCase1(binary)){
+            if(binaryValues[5]==0 && binaryValues[6]==0
+                    && binaryValues[7]==0&& binaryValues[8]==0){
                 case1.add(i);
             }
-            if(checkBinaryCase3(binary)){
+            if(binaryValues[3]==0 && binaryValues[4]==0
+                    && binaryValues[5]==0&& binaryValues[6]==0){
                 case2.add(i);
             }
         }
-        
+
     }
 
-    public static boolean checkBinaryCase0(StringBuilder binary) {
-        return binary.charAt(1) == '0' && binary.charAt(2) == '0' &&
-                binary.charAt(3) == '0' && binary.charAt(4) == '0';
+    public static int getBit(int value,int position)
+    {
+        return (value >> position) & 1;
     }
 
-    public static boolean checkBinaryCase1(StringBuilder binary) {
-        return binary.charAt(5) == '0' && binary.charAt(6) == '0' &&
-                binary.charAt(7) == '0' && binary.charAt(8) == '0';
-    }
 
-    public static boolean checkBinaryCase3(StringBuilder binary) {
-        return binary.charAt(3) == '0' && binary.charAt(4) == '0' &&
-                binary.charAt(5) == '0' && binary.charAt(6) == '0';
-    }
+
+
 
 }
