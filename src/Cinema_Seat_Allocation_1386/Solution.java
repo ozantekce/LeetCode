@@ -19,15 +19,13 @@ public class Solution {
 
         HashMap<Integer,Integer> numbers = new HashMap<>();
 
-        for (int i = 0; i < reservedSeats.length; i++) {
-
-            int row = reservedSeats[i][0]-1;
-            int col = reservedSeats[i][1]-1;
-            numbers.put(row,setBinary(numbers.getOrDefault(row,0),col));
+        for (int[] reservedSeat : reservedSeats) {
+            int row = reservedSeat[0] - 1;
+            int col = reservedSeat[1] - 1;
+            numbers.put(row, setBinary(numbers.getOrDefault(row, 0), col));
         }
 
         int counter = 0;
-
         for (int number : numbers.values()) {
             boolean cnt = false;
             if(case0.contains(number)){
@@ -55,21 +53,30 @@ public class Solution {
         return number;
     }
 
-    private static HashSet<Integer> case0 = new HashSet<>();
-    private static HashSet<Integer> case1 = new HashSet<>();
-    private static HashSet<Integer> case2 = new HashSet<>();
+    private static final HashSet<Integer> case0 = new HashSet<>();
+    private static final HashSet<Integer> case1 = new HashSet<>();
+    private static final HashSet<Integer> case2 = new HashSet<>();
     static{
         for (int i = 0; i <= 1023; i++) {
 
             int [] binaryValues = new int[9];
-            binaryValues[1] = getBit(i,1);
-            binaryValues[2] = getBit(i,2);
-            binaryValues[3] = getBit(i,3);
-            binaryValues[4] = getBit(i,4);
-            binaryValues[5] = getBit(i,5);
-            binaryValues[6] = getBit(i,6);
-            binaryValues[7] = getBit(i,7);
-            binaryValues[8] = getBit(i,8);
+            int value = i;
+            value = value>>1;
+            binaryValues[1] = value & 1;
+            value = value>>1;
+            binaryValues[2] = value & 1;
+            value = value>>1;
+            binaryValues[3] = value & 1;
+            value = value>>1;
+            binaryValues[4] = value & 1;
+            value = value>>1;
+            binaryValues[5] = value & 1;
+            value = value>>1;
+            binaryValues[6] = value & 1;
+            value = value>>1;
+            binaryValues[7] = value & 1;
+            value = value>>1;
+            binaryValues[8] = value & 1;
 
             if(binaryValues[1]==0 && binaryValues[2]==0
                     && binaryValues[3]==0&& binaryValues[4]==0){
@@ -86,13 +93,6 @@ public class Solution {
         }
 
     }
-
-    public static int getBit(int value,int position)
-    {
-        return (value >> position) & 1;
-    }
-
-
 
 
 
