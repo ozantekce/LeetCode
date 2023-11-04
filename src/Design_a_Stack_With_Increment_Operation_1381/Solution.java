@@ -26,8 +26,11 @@ public class Solution {
         private int [] array;
         private int lenght;
 
+        private int incrementRecord [];
+
         public CustomStack(int maxSize) {
             array = new int[maxSize];
+            incrementRecord = new int[maxSize];
         }
 
         public void push(int x) {
@@ -37,16 +40,27 @@ public class Solution {
 
         public int pop() {
             if(lenght == 0) return -1;
-            return array[--lenght];
+
+            int index = lenght - 1;
+            int val = array[index];
+            val += incrementRecord[index];
+            if(index == 0){
+                incrementRecord[index] = 0;
+            }else{
+                incrementRecord[index-1] += incrementRecord[index];
+                incrementRecord[index] = 0;
+            }
+            lenght--;
+            return val;
         }
 
         public void increment(int k, int val) {
             if(k>lenght){
                 k = lenght;
             }
-            for (int i = 0; i < k; i++) {
-                array[i]+=val;
-            }
+            k--;
+            if(k>=0)
+                incrementRecord[k] += val;
         }
     }
 
