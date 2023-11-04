@@ -22,10 +22,8 @@ public class Solution {
 
     private static class CustomStack {
 
-
-        private int [] array;
         private int lenght;
-
+        private int [] array;
         private int incrementRecord [];
 
         public CustomStack(int maxSize) {
@@ -40,17 +38,13 @@ public class Solution {
 
         public int pop() {
             if(lenght == 0) return -1;
-
-            int index = lenght - 1;
-            int val = array[index];
-            val += incrementRecord[index];
-            if(index == 0){
-                incrementRecord[index] = 0;
-            }else{
-                incrementRecord[index-1] += incrementRecord[index];
-                incrementRecord[index] = 0;
-            }
             lenght--;
+            int val = array[lenght];
+            val += incrementRecord[lenght];
+            if(lenght != 0){
+                incrementRecord[lenght-1] += incrementRecord[lenght];
+            }
+            incrementRecord[lenght] = 0;
             return val;
         }
 
