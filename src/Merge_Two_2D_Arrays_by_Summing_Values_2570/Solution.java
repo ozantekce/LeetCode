@@ -1,9 +1,6 @@
 package Merge_Two_2D_Arrays_by_Summing_Values_2570;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
 
@@ -27,18 +24,8 @@ public class Solution {
 
     public static int[][] mergeArrays(int[][] nums1, int[][] nums2) {
 
-        HashSet<Integer> idCounts = new HashSet<>();
+        List<int[]> resultList = new ArrayList<>(nums1.length + nums2.length);
 
-        for (int i = 0; i < nums1.length; i++) {
-            idCounts.add(nums1[i][0]);
-        }
-        for (int i = 0; i < nums2.length; i++) {
-            idCounts.add(nums2[i][0]);
-        }
-
-        int [][] result = new int[idCounts.size()][2];
-
-        int index = 0;
         int i1 = 0;
         int i2 = 0;
 
@@ -61,26 +48,24 @@ public class Solution {
             }
 
             if(id1 == id2){
-                result[index][0] = id1;
-                result[index][1] = value1 + value2;
+                resultList.add(new int []{id1, value1+value2});
                 i1++;
                 i2++;
             }else if(id1 < id2){
-                result[index][0] = id1;
-                result[index][1] = value1;
+                resultList.add(new int []{id1, value1});
                 i1++;
             }else{
-                result[index][0] = id2;
-                result[index][1] = value2;
+                resultList.add(new int []{id2, value2});
                 i2++;
             }
 
-            index++;
         }
 
+        int [][] result = resultList.toArray(new int[resultList.size()][]);
 
         return result;
     }
+
 
 
 
