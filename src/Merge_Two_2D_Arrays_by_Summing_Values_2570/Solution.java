@@ -25,40 +25,41 @@ public class Solution {
     public static int[][] mergeArrays(int[][] nums1, int[][] nums2) {
 
         List<int[]> resultList = new ArrayList<>(nums1.length + nums2.length);
-
         int i1 = 0;
         int i2 = 0;
 
-        while (i1 < nums1.length || i2 < nums2.length){
+        while (i1 < nums1.length && i2 < nums2.length){
 
-            int id1 = Integer.MAX_VALUE;
-            int value1 = 0;
+            int id1 = nums1[i1][0];
+            int value1 = nums1[i1][1];
 
-            if(i1 < nums1.length){
-                id1 = nums1[i1][0];
-                value1 = nums1[i1][1];
-            }
-
-            int id2 = Integer.MAX_VALUE;
-            int value2 = 0;
-
-            if(i2 < nums2.length){
-                id2 = nums2[i2][0];
-                value2 = nums2[i2][1];
-            }
+            int id2 = nums2[i2][0];
+            int value2 = nums2[i2][1];
 
             if(id1 == id2){
                 resultList.add(new int []{id1, value1+value2});
                 i1++;
                 i2++;
             }else if(id1 < id2){
-                resultList.add(new int []{id1, value1});
+                resultList.add(nums1[i1]);
                 i1++;
             }else{
-                resultList.add(new int []{id2, value2});
+                resultList.add(nums2[i2]);
                 i2++;
             }
 
+        }
+
+        if(i1 == nums1.length){
+            while (i2 < nums2.length){
+                resultList.add(nums2[i2]);
+                i2++;
+            }
+        }else{
+            while (i1 < nums1.length){
+                resultList.add(nums1[i1]);
+                i1++;
+            }
         }
 
         int [][] result = resultList.toArray(new int[resultList.size()][]);
