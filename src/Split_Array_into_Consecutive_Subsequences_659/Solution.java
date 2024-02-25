@@ -37,55 +37,9 @@ public class Solution {
     }
 
 
+
+
     public static boolean isPossible(int[] nums) {
-
-        HashMap<Integer, Integer> availableCounter = new HashMap<>();
-        HashMap<Integer, Integer> needCounter = new HashMap<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            availableCounter.put(nums[i],availableCounter.getOrDefault(nums[i],0) + 1);
-        }
-
-
-        for (int i = 0; i < nums.length; i++) {
-
-            int value = nums[i];
-            int available = availableCounter.get(nums[i]);
-            int need = needCounter.getOrDefault(value, 0);
-
-            if(available <= 0) continue;
-
-            int next1Value = value + 1;
-            int next2Value = value + 2;
-            int next3Value = value + 3;
-
-            if(need > 0){
-                availableCounter.put(value, available - 1);
-                needCounter.put(value, need - 1);
-                needCounter.put(next1Value, needCounter.getOrDefault(next1Value,0) + 1);
-            }
-            else if(availableCounter.getOrDefault(next1Value,0) > 0 &&
-                    availableCounter.getOrDefault(next2Value,0) > 0){
-
-                availableCounter.put(value, available - 1);
-                availableCounter.put(next1Value, availableCounter.getOrDefault(next1Value,0)-1);
-                availableCounter.put(next2Value, availableCounter.getOrDefault(next2Value,0)-1);
-
-                needCounter.put(next2Value + 1, needCounter.getOrDefault(next2Value + 1, 0 ) + 1);
-
-            }else{
-                return false;
-            }
-
-        }
-
-
-        return true;
-    }
-
-
-
-    public static boolean isPossible2(int[] nums) {
 
         HashMap<Integer, Integer> needCounter = new HashMap<>();
         HashMap<Integer, Integer> nextLastValue = new HashMap<>();
@@ -115,6 +69,48 @@ public class Solution {
 
 
         return needCounter.isEmpty();
+    }
+
+
+    public static boolean isPossible2(int[] nums) {
+
+        HashMap<Integer, Integer> needCounter = new HashMap<>();
+        HashMap<Integer, Integer> nextLastValue = new HashMap<>();
+
+        Queue<Integer> nextMinNeed = new ArrayDeque<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            int value = nums[i];
+
+            if(!nextMinNeed.isEmpty() && value > nextMinNeed.peek()) return false;
+
+            if(needCounter.getOrDefault(value, 0) > 0){
+                needCounter.put(value, needCounter.get(value) - 1);
+                if(needCounter.get(value) == 0){
+                    if(!nextMinNeed.isEmpty() && value == nextMinNeed.peek()){
+                        needCounter.remove(value);
+                        nextMinNeed.poll();
+                    }
+                }
+            }else if(nextLastValue.getOrDefault(value,0) > 0){
+                nextLastValue.put(value,nextLastValue.get(value)-1);
+                nextLastValue.put(value+1,nextLastValue.getOrDefault(value+1,0)+1);
+            }else{
+                if(!needCounter.containsKey(value+1)){
+                    nextMinNeed.add(value+1);
+                }
+                if(!needCounter.containsKey(value+2)){
+                    nextMinNeed.add(value+2);
+                }
+                needCounter.put(value+1,needCounter.getOrDefault(value+1,0)+1);
+                needCounter.put(value+2,needCounter.getOrDefault(value+2,0)+1);
+                nextLastValue.put(value+3,nextLastValue.getOrDefault(value+3,0)+1);
+            }
+
+        }
+
+        return nextMinNeed.isEmpty();
     }
 
 
