@@ -20,27 +20,17 @@ public class Solution {
 
         int[][] DP = new int[m][n];
 
-        for (int i = 0; i < n; i++) {
-            DP[0][i] = grid[0][i];
-        }
+        DP[0] = grid[0];
 
         for (int r = 1; r < m; r++) {
             for (int c = 0; c < n; c++) {
-                DP[r][c] = Integer.MAX_VALUE;
-            }
-        }
-
-        for (int r = 1; r < m; r++) {
-
-            for (int c = 0; c < n; c++) {
-
-                for (int i = 0; i < n; i++) {
+                DP[r][c] = grid[r][c] + moveCost[grid[r-1][0]][c] + DP[r-1][0];
+                for (int i = 1; i < n; i++) {
                     int cost = cost(r-1, i, r, c, grid, moveCost) + DP[r-1][i];
                     DP[r][c] = Math.min(DP[r][c], cost);
                 }
             }
         }
-
 
         int min = DP[m-1][0];
         for (int i = 1; i < n; i++) {
