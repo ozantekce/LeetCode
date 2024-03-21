@@ -40,37 +40,35 @@ public class Solution {
 
         int count = 0;
         Counter.clear();
-        for (int i = 0; i < coordinates.size(); i++) {
 
-            int x1 = coordinates.get(i).get(0);
-            int y1 = coordinates.get(i).get(1);
+        int x1 = coordinates.get(0).get(0);
+        int y1 = coordinates.get(0).get(1);
+        HashMap<Integer,Integer> subCounter = Counter.getOrDefault(x1, new HashMap<>());
+        int coordinateCount = subCounter.getOrDefault(y1, 0) + 1;
+        subCounter.put(y1, coordinateCount);
+        Counter.put(x1, subCounter);
 
-            if(!Counter.isEmpty()){
-                for (int j = 0; j <= k; j++) {
-                    int x = j;
-                    if(k - x < 0){
-                        break;
-                    }
-                    int x2 = (x ^ x1);
+        for (int i = 1; i < coordinates.size(); i++) {
+
+            x1 = coordinates.get(i).get(0);
+            y1 = coordinates.get(i).get(1);
+
+            for (int x = 0; x <= k; x++) {
+                int x2 = (x ^ x1);
+                if(Counter.containsKey(x2)){
                     int y2 = (k - x) ^ y1;
-
-                    if(Counter.containsKey(x2)){
-                        HashMap<Integer,Integer> temp = Counter.get(x2);
-                        int coordinateCount = temp.getOrDefault(y2, 0);
-                        count += coordinateCount;
-                    }
-
+                    subCounter = Counter.get(x2);
+                    count += subCounter.getOrDefault(y2, 0);
                 }
             }
-            
-            HashMap<Integer,Integer> temp = Counter.getOrDefault(x1, new HashMap<>());
-            int coordinateCount = temp.getOrDefault(y1, 0) + 1;
-            temp.put(y1, coordinateCount);
-            Counter.put(x1, temp);
+
+            subCounter = Counter.getOrDefault(x1, new HashMap<>());
+            coordinateCount = subCounter.getOrDefault(y1, 0) + 1;
+            subCounter.put(y1, coordinateCount);
+            Counter.put(x1, subCounter);
 
         }
         return count;
     }
-
 
 }
