@@ -16,69 +16,61 @@ public class Solution {
         System.out.println(countPairs(coordinates0, 5));
 
         List<List<Integer>> coordinates1 = new ArrayList<>();
-        coordinates1.add(Arrays.asList(1, 3));
-        coordinates1.add(Arrays.asList(1, 3));
-        coordinates1.add(Arrays.asList(1, 3));
-        coordinates1.add(Arrays.asList(1, 3));
-        coordinates1.add(Arrays.asList(1, 3));
+        coordinates1.add(Arrays.asList(27, 94));
+        coordinates1.add(Arrays.asList(61, 68));
+        coordinates1.add(Arrays.asList(47, 0));
+        coordinates1.add(Arrays.asList(100, 4));
+        coordinates1.add(Arrays.asList(127, 89));
+        coordinates1.add(Arrays.asList(61, 103));
+        coordinates1.add(Arrays.asList(26, 4));
+        coordinates1.add(Arrays.asList(51, 54));
+        coordinates1.add(Arrays.asList(91, 26));
+        coordinates1.add(Arrays.asList(98, 23));
+        coordinates1.add(Arrays.asList(80, 74));
+        coordinates1.add(Arrays.asList(19, 93));
 
-        //System.out.println(countPairs(coordinates1, 0));
+        System.out.println(countPairs(coordinates1, 95));
 
     }
 
-    private static HashSet<Integer> Xs = new HashSet<>();
-    private static HashSet<Integer> Ys = new HashSet<>();
-    private static final HashMap<Integer,HashMap<Integer,Integer>> NeedTable = new HashMap<>();
+
+    private static final HashMap<Integer,HashMap<Integer,Integer>> Counter = new HashMap<>();
 
     public static int countPairs(List<List<Integer>> coordinates, int k) {
 
-        Xs.clear();
-        Ys.clear();
-        for (int i = 0; i < coordinates.size(); i++) {
-            int x1 = coordinates.get(i).get(0);
-            int y1 = coordinates.get(i).get(1);
-            Xs.add(x1);
-            Ys.add(y1);
-        }
-
         int count = 0;
-        NeedTable.clear();
+        Counter.clear();
         for (int i = 0; i < coordinates.size(); i++) {
 
             int x1 = coordinates.get(i).get(0);
             int y1 = coordinates.get(i).get(1);
 
-            if(NeedTable.containsKey(x1) && NeedTable.get(x1).containsKey(y1)){
-                count += NeedTable.get(x1).get(y1);
-            }
+            if(!Counter.isEmpty()){
+                for (int j = 0; j <= k; j++) {
+                    int x = j;
+                    if(k - x < 0){
+                        break;
+                    }
+                    int x2 = (x ^ x1);
+                    int y2 = (k - x) ^ y1;
 
-            for (int j = 0; j <= k; j++) {
-                int x = j;
-                if(k - x < 0){
-                    break;
+                    if(Counter.containsKey(x2)){
+                        HashMap<Integer,Integer> temp = Counter.get(x2);
+                        int coordinateCount = temp.getOrDefault(y2, 0);
+                        count += coordinateCount;
+                    }
+
                 }
-                int x2 = (x ^ x1);
-                int y2 = (k - x) ^ y1;
-
-                if(!Xs.contains(x2) || !Ys.contains(y2)){
-                    continue;
-                }
-
-                //System.out.println("x2 : "+ x2 +" y2 : "+ y2);
-
-                HashMap<Integer,Integer> temp = NeedTable.getOrDefault(x2, new HashMap<>());
-                int needCount = temp.getOrDefault(y2, 0) + 1;
-                temp.put(y2, needCount);
-                NeedTable.put(x2, temp);
             }
+            
+            HashMap<Integer,Integer> temp = Counter.getOrDefault(x1, new HashMap<>());
+            int coordinateCount = temp.getOrDefault(y1, 0) + 1;
+            temp.put(y1, coordinateCount);
+            Counter.put(x1, temp);
 
         }
         return count;
     }
-
-
-
-
 
 
 }
