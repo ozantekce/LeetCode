@@ -15,28 +15,27 @@ public class Solution {
 
 
 
+
+    private static final HashSet<Integer> Set = new HashSet<>();
     public static int lenLongestFibSubseq(int[] arr) {
-
-        HashSet<Integer> set = new HashSet<>();
-
+        Set.clear();
         for (int i = 0; i < arr.length; i++) {
-            set.add(arr[i]);
+            Set.add(arr[i]);
         }
-
         int maxCount = 0;
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length-2; i++) {
 
-            for (int j = i+1; j < arr.length; j++) {
+            for (int j = i+1; j < arr.length-1; j++) {
                 int first = arr[i];
                 int second = arr[j];
                 int third = first + second;
-                if(set.contains(third)){
+                if(Set.contains(third)){
                     int count = 3;
                     int last0 = second;
                     int last1 = third;
                     while (true){
                         int next = last0 + last1;
-                        if(set.contains(next)){
+                        if(Set.contains(next)){
                             count++;
                             last0 = last1;
                             last1 = next;
