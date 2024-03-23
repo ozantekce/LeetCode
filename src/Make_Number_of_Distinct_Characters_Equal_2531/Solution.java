@@ -1,5 +1,7 @@
 package Make_Number_of_Distinct_Characters_Equal_2531;
 
+import java.util.Arrays;
+
 public class Solution {
 
 
@@ -10,8 +12,8 @@ public class Solution {
         //System.out.println(isItPossible("abcde","fghij"));
         //System.out.println(isItPossible("ab","abcc"));
         //System.out.println(isItPossible("a","bb"));
-        System.out.println(isItPossible("aa","ab"));
-        //System.out.println(isItPossible("wilfuzpxqserkdcvbgajtyhon","rlmyvwvucqxsjodbelmgjkabnxegihuwats"));
+        //System.out.println(isItPossible("aa","ab"));
+        System.out.println(isItPossible("wilfuzpxqserkdcvbgajtyhon","rlmyvwvucqxsjodbelmgjkabnxegihuwats"));
 
     }
 
@@ -26,32 +28,22 @@ public class Solution {
         int distinct2 = 0;
 
         for (int i = 0; i < word1.length(); i++) {
-            int index = word1.charAt(i)- 'a';
-            if(counter1[index] == 0)
-                distinct1++;
+            int index = word1.charAt(i) - 97;
+            if(counter1[index] == 0) distinct1++;
             counter1[index]++;
         }
         for (int i = 0; i < word2.length(); i++) {
-            int index = word2.charAt(i)- 'a';
-            if(counter2[index] == 0)
-                distinct2++;
+            int index = word2.charAt(i) - 97;
+            if(counter2[index] == 0) distinct2++;
             counter2[index]++;
         }
 
         if(distinct1 - distinct2 > 2 || distinct2 - distinct1 > 2) return false;
 
         for (int i = 0; i < 26; i++) {
+            if (counter1[i] == 0) continue;
             for (int j = 0; j < 26; j++) {
-
-                //if(i == j) continue;
-
-                int charCount_I_1 = counter1[i];
-                int charCount_J_1 = counter1[j];
-                if (charCount_I_1 == 0) break;
-
-                int charCount_I_2 = counter2[i];
-                int charCount_J_2 = counter2[j];
-                if (charCount_J_2 == 0) continue;
+                if (counter2[j] == 0) continue;
 
                 if(i == j){
                     if(distinct1 == distinct2) return true;
@@ -59,19 +51,14 @@ public class Solution {
                 }
 
                 // swap
-                charCount_I_1--;
-                charCount_J_1++;
-
-                charCount_I_2++;
-                charCount_J_2--;
-
                 int distinct1_new = distinct1;
                 int distinct2_new = distinct2;
 
-                if(charCount_I_1 == 0) distinct1_new--;
-                if(charCount_J_1 == 1) distinct1_new++;
-                if(charCount_J_2 == 0) distinct2_new--;
-                if(charCount_I_2 == 1) distinct2_new++;
+                if(counter1[i] == 1) distinct1_new--;
+                if(counter1[j] == 0) distinct1_new++;
+
+                if(counter2[i] == 0) distinct2_new++;
+                if(counter2[j] == 1) distinct2_new--;
 
                 if(distinct1_new == distinct2_new) return true;
             }
