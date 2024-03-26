@@ -1,42 +1,25 @@
 package Smallest_Number_in_Infinite_Set_2336;
 
-
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeSet;
 
 class SmallestInfiniteSet {
 
-    private Set<Integer> removed;
+    private TreeSet<Integer> added;
+    private int pointer=1;
     public SmallestInfiniteSet() {
-        removed = new HashSet<>();
+        added = new TreeSet<>();
     }
 
     public int popSmallest() {
-        if(removed.isEmpty()){
-            removed.add(1);
-            return 1;
-        }else{
-            if(!removed.contains(1)){
-                removed.add(1);
-                return 1;
-            }
-            for(Integer value : removed){
-                if(!removed.contains(value+1)){
-                    removed.add(value+1);
-                    return value+1;
-                }
-
-            }
-
+        if(!added.isEmpty() && added.first() <= pointer){
+            return added.pollFirst();
         }
-        return 0;
+        return pointer++;
     }
 
     public void addBack(int num) {
-        if(removed.contains(num)){
-            removed.remove(num);
-        }
+        if(num < pointer)
+            added.add(num);
     }
 }
 
