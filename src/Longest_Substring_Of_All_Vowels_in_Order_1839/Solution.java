@@ -81,7 +81,7 @@ public class Solution {
                         currentCount = 1;
                     }
                     else
-                        state = -1;;
+                        state = -1;
                 }
 
             }
@@ -106,8 +106,8 @@ public class Solution {
             else if(state == 4){
                 if(current == 'u'){
                     currentCount++;
-                    maxCount = Math.max(maxCount, currentCount);
                 }else{
+                    maxCount = Math.max(maxCount, currentCount);
                     if(current == 'a'){
                         state = 0;
                         currentCount = 1;
