@@ -16,27 +16,12 @@ public class Solution {
     public static int findNonMinOrMax(int[] nums) {
 
         if(nums.length<=2) return -1;
+        int a = nums[0];
+        int b = nums[1];
+        int c = nums[2];
 
-        int result = -1;
-        int min = nums[0];
-        int max = nums[0];
+        return a + b + c - Math.max(Math.max(a, b), c) - Math.min(Math.min(a, b), c);
 
-        for (int i = 1; i < nums.length; i++) {
-
-            int num = nums[i];
-
-            if(num<min){
-                result = min;
-                min = num;
-            }else if(num>max){
-                result = max;
-                max = num;
-            }else{
-                result = num;
-            }
-
-        }
-        return result;
     }
 
 
