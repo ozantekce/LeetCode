@@ -1,10 +1,7 @@
 package Find_All_Numbers_Disappeared_in_an_Array_448;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -18,36 +15,20 @@ public class Solution {
 
     public static List<Integer> findDisappearedNumbers(int[] nums) {
 
-        List<Integer> list = new ArrayList<>(nums.length);
-        Arrays.sort(nums);
-        int pointer = 0;
-        int val =1;
-        while (true){
-            if(pointer>=nums.length){
+        List<Integer> result = new ArrayList<>();
 
-                if(val<=nums.length){
-                    for (int i = val; i <= nums.length; i++) {
-                        list.add(i);
-                    }
-                }
+        boolean[] set = new boolean[nums.length+1];
 
-                break;
-            }
-            if(nums[pointer] == val){
-                val++;
-                pointer++;
-            }else if(nums[pointer]>val){
-                list.add(val);
-                val++;
-
-            }else{
-                pointer++;
-            }
-
+        for (int i = 0; i < nums.length; i++) {
+            set[nums[i]] = true;
         }
 
-        //System.out.println(list);
-        return list;
+        for (int i = 1; i < set.length; i++) {
+            if(!set[i])
+                result.add(i);
+        }
+
+        return result;
     }
 
 }
