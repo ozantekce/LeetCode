@@ -1,4 +1,6 @@
-public class Calculate_Money_in_Leetcode_Bank_1716 {
+package Calculate_Money_in_Leetcode_Bank_1716;
+
+public class Solution {
 
 
     public static void main(String[] args) {

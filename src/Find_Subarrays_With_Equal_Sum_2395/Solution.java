@@ -1,7 +1,9 @@
+package Find_Subarrays_With_Equal_Sum_2395;
+
 import java.util.HashSet;
 import java.util.Set;
 
-public class Find_Subarrays_With_Equal_Sum_2395 {
+public class Solution {
 
 
     public static void main(String[] args) {

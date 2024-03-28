@@ -1,6 +1,8 @@
+package Defuse_the_Bomb_1652;
+
 import java.util.Arrays;
 
-public class Defuse_the_Bomb_1652 {
+public class Solution {
 
 
     public static void main(String[] args) {
