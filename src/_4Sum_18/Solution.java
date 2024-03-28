@@ -13,7 +13,7 @@ public class Solution {
         //System.out.println(fourSum(new int[]{-3,-2,-1,0,0,1,2,3}, 0));
         //System.out.println(fourSum(new int[]{1000000000,1000000000,1000000000,1000000000}, -294967296));
         //System.out.println(fourSum(new int[]{-1,0,1,2,-1,-4}, -1));
-        //System.out.println(fourSum(new int[]{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}, 8));
+        System.out.println(fourSum(new int[]{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}, 8));
 
     }
 
@@ -24,7 +24,6 @@ public class Solution {
             return new ArrayList<>();
 
         Arrays.sort(nums);
-        HashSet<Integer> set = new HashSet<>();
         List<List<Integer>> result = new ArrayList<>();
 
         for (int i = 0; i < nums.length - 3; i++) {
@@ -52,7 +51,6 @@ public class Solution {
                         break;
                 }
 
-
                 long currentTarget = (long) target - num0 - num1;
                 int f = i+1;
                 int l = j-1;
@@ -62,42 +60,39 @@ public class Solution {
                     long currenValue = nums[f] + nums[l];
                     if(currenValue > currentTarget){
                         l--;
+                        while (f < l && nums[l] == nums[l + 1]) {
+                            l--; // Skip duplicates
+                        }
                     }else if(currenValue < currentTarget){
                         f++;
+                        while (f < l && nums[f] == nums[f - 1]) {
+                            f++; // Skip duplicates
+                        }
                     }else{
                         int num2 = nums[f];
                         int num3 = nums[l];
-                        // we know that num0 <= num1 <= num2 <= num3,
-                        // so we can create a hash code to skip duplicated quadruplets
-                        int hash = hashCode(num0, num1, num2, num3);
-                        if(set.add(hash)){
-                            List<Integer> list = new ArrayList<>(4);
-                            list.add(num0);
-                            list.add(num1);
-                            list.add(num2);
-                            list.add(num3);
-                            result.add(list);
-                        }
+                        List<Integer> list = new ArrayList<>(4);
+                        list.add(num0);
+                        list.add(num1);
+                        list.add(num2);
+                        list.add(num3);
+                        result.add(list);
                         l--;
+                        while (f < l && nums[l] == nums[l + 1]) {
+                            l--; // Skip duplicates
+                        }
+                        f++;
+                        while (f < l && nums[f] == nums[f - 1]) {
+                            f++; // Skip duplicates
+                        }
                     }
                 }
 
             }
-
         }
 
         return result;
     }
-
-    private static int hashCode(int a, int b, int c, int d) {
-        int hash = 17;
-        hash = ((hash << 5) - hash) + a;
-        hash = ((hash << 5) - hash) + b;
-        hash = ((hash << 5) - hash) + c;
-        hash = ((hash << 5) - hash) + d;
-        return hash;
-    }
-
 
 
 }
