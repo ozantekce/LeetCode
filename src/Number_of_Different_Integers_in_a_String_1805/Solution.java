@@ -1,7 +1,9 @@
+package Number_of_Different_Integers_in_a_String_1805;
+
 import java.util.HashSet;
 import java.util.Set;
 
-public class Number_of_Different_Integers_in_a_String_1805 {
+public class Solution {
 
 
     public static void main(String[] args) {

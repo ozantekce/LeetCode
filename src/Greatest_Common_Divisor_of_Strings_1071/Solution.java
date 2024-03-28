@@ -1,4 +1,6 @@
-public class Greatest_Common_Divisor_of_Strings_1071 {
+package Greatest_Common_Divisor_of_Strings_1071;
+
+public class Solution {
 
 
     public static void main(String[] args) {

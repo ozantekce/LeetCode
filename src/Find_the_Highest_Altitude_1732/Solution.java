@@ -1,4 +1,6 @@
-public class Find_the_Highest_Altitude_1732 {
+package Find_the_Highest_Altitude_1732;
+
+public class Solution {
 
 
     public static void main(String[] args) {

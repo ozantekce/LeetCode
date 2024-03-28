@@ -1,6 +1,6 @@
-import java.util.Arrays;
+package Min_Max_Game_2293;
 
-public class Min_Max_Game_2293 {
+public class Solution {
 
 
     public static void main(String[] args) {
