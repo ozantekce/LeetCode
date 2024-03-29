@@ -21,21 +21,20 @@ public class Solution {
         Arrays.sort(nums);
         long result = 0;
 
-        for (int i = 0; i < nums.length; i++) {
+        for (int i = 0; i < nums.length-1; i++) {
             int current = nums[i];
             int newLower = lower - current;
             int newUpper = upper - current;
 
-            if (newLower > nums[nums.length - 1]) {
-                continue;
-            }
-
-            if (newUpper < nums[0]) {
+            if (newLower > nums[nums.length - 1] ||
+                    newUpper < nums[0] ||
+                    newUpper < newLower) {
                 continue;
             }
 
             int lowerIndex = binarySearch(i+1, nums.length, newLower, nums, true);
             int upperIndex = binarySearch(i+1, nums.length, newUpper, nums, false);
+
 
             int count = upperIndex - lowerIndex + 1;
 
