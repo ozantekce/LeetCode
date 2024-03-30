@@ -31,30 +31,33 @@ public class Solution {
         System.out.println(clumsy(10));
     }
 
+
     public static int clumsy(int n) {
         if (n == 0) {
             return 0;
         }
-        Stack<Integer> stack = new Stack<>();
-        stack.push(n--);
+        int topIndex = 0;
+        int[] stack = new int[n];
+        stack[topIndex] = n--;
 
         int index = 0;
         while (n > 0) {
             if (index % 4 == 0) {
-                stack.push(stack.pop() * n);
+                stack[topIndex] *= n;
             } else if (index % 4 == 1) {
-                stack.push(stack.pop() / n);
+                stack[topIndex] /= n;
             } else if (index % 4 == 2) {
-                stack.push(n);
+                stack[++topIndex] = n;
             } else {
-                stack.push(-n);
+                stack[++topIndex] = -n;
             }
             n--;
             index++;
         }
-        int result = 0;
-        while (!stack.isEmpty()) {
-            result += stack.pop();
+
+        int result = stack[0];
+        for (int i = 1; i <= topIndex; i++) {
+            result += stack[i];
         }
         return result;
     }
