@@ -32,6 +32,37 @@ public class Solution {
     }
 
     public static int clumsy(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        Stack<Integer> stack = new Stack<>();
+        stack.push(n--);
+
+        int index = 0;
+        while (n > 0) {
+            if (index % 4 == 0) {
+                stack.push(stack.pop() * n);
+            } else if (index % 4 == 1) {
+                stack.push(stack.pop() / n);
+            } else if (index % 4 == 2) {
+                stack.push(n);
+            } else {
+                stack.push(-n);
+            }
+            n--;
+            index++;
+        }
+        int result = 0;
+        while (!stack.isEmpty()) {
+            result += stack.pop();
+        }
+        return result;
+    }
+
+
+
+    public static int clumsyTreeSolution(int n) {
+
         Operator [] operators = new Operator[]{Operator.Mul, Operator.Div, Operator.Sum, Operator.Sub};
         int j = 0;
         ExpressionTree tree = new ExpressionTree();
@@ -42,6 +73,7 @@ public class Solution {
                 j = 0;
             tree.add(i);
         }
+
         return tree.evaluate();
     }
 
@@ -131,39 +163,40 @@ public class Solution {
             return evaluatePostfix(postfix);
         }
 
-        private class ExpressionNode {
-            int value;
-            ExpressionNode left, right;
+    }
 
-            ExpressionNode(int value) {
-                this.value = value;
+    private static class ExpressionNode {
+        int value;
+        ExpressionNode left, right;
+
+        ExpressionNode(int value) {
+            this.value = value;
+        }
+
+        boolean isOperator() {
+            return value < 0;
+        }
+
+        int evaluate() {
+            if (!isOperator()) {
+                return value;
             }
 
-            boolean isOperator() {
-                return value < 0;
-            }
+            int leftValue = left == null ? 0 : left.evaluate();
+            int rightValue = right == null ? 0 : right.evaluate();
 
-            int evaluate() {
-                if (!isOperator()) {
-                    return value;
-                }
-
-                int leftValue = left == null ? 0 : left.evaluate();
-                int rightValue = right == null ? 0 : right.evaluate();
-
-                switch (Operator.fromValue(value)) {
-                    case Mul:
-                        return leftValue * rightValue;
-                    case Div:
-                        if (rightValue == 0) throw new ArithmeticException("Division by zero");
-                        return leftValue / rightValue;
-                    case Sum:
-                        return leftValue + rightValue;
-                    case Sub:
-                        return leftValue - rightValue;
-                    default:
-                        throw new IllegalStateException("Invalid operator");
-                }
+            switch (Operator.fromValue(value)) {
+                case Mul:
+                    return leftValue * rightValue;
+                case Div:
+                    if (rightValue == 0) throw new ArithmeticException("Division by zero");
+                    return leftValue / rightValue;
+                case Sum:
+                    return leftValue + rightValue;
+                case Sub:
+                    return leftValue - rightValue;
+                default:
+                    throw new IllegalStateException("Invalid operator");
             }
         }
     }
