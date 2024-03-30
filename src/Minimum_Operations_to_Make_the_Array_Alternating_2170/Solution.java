@@ -11,7 +11,7 @@ public class Solution {
         //System.out.println(minimumOperations(new int [] {1,2,2,2,2}));
         //System.out.println(minimumOperations(new int [] {2,2}));
         //System.out.println(minimumOperations(new int [] {2,2,2,2}));
-        System.out.println(minimumOperations(new int [] {4,3,4,3,4,3,3,5,3,5,3,3}));
+        //System.out.println(minimumOperations(new int [] {4,3,4,3,4,3,3,5,3,5,3,3}));
         System.out.println(minimumOperations(new int [] {4,4,4,4,3,4}));
         //System.out.println(minimumOperations(new int [] {48,38,42,18,13,1,97,88,82,48,54,16,78,59,52,30,40,77,59,87,71,28}));
 
@@ -20,8 +20,12 @@ public class Solution {
 
     public static int minimumOperations(int[] nums) {
 
-        HashMap<Integer,Integer> counterOdds = new HashMap<>();
-        HashMap<Integer,Integer> counterEvens = new HashMap<>();
+
+        int oddCount  = nums.length / 2;
+        int evenCount = (nums.length + 1) / 2;
+
+        HashMap<Integer,Integer> counterOdds = new HashMap<>(oddCount);
+        HashMap<Integer,Integer> counterEvens = new HashMap<>(evenCount);
 
         for (int i = 1; i < nums.length; i+=2) {
             counterOdds.put(nums[i], counterOdds.getOrDefault(nums[i],0)+1);
@@ -30,8 +34,6 @@ public class Solution {
             counterEvens.put(nums[i], counterEvens.getOrDefault(nums[i],0)+1);
         }
 
-        int oddCount  = nums.length / 2;
-        int evenCount = (nums.length + 1) / 2;
 
         int maxCount = -1;
         int secondMaxCount = -1;
@@ -72,7 +74,6 @@ public class Solution {
                 maxEvens1 = num;
             }
         }
-        
 
         if(maxEvens0 != maxOdds0){
             return evenCount + oddCount - counterEvens.getOrDefault(maxEvens0,0)
