@@ -1,5 +1,7 @@
 package Number_of_Strings_That_Appear_as_Substrings_in_Word_1967;
 
+import java.util.Arrays;
+
 public class Solution {
 
     public static void main(String[] args) {
@@ -14,7 +16,7 @@ public class Solution {
 
         int counter = 0;
         for (int i = 0; i < patterns.length; i++) {
-            if(KMPSearch(patterns[i], word))
+            if(Search(patterns[i], word))
                 counter++;
         }
 
@@ -22,76 +24,26 @@ public class Solution {
     }
 
 
-    private static boolean KMPSearch(String pat, String txt)
-    {
-        int M = pat.length();
-        int N = txt.length();
+    private static boolean Search(String pat, String txt) {
 
-        // create lps[] that will hold the longest
-        // prefix suffix values for pattern
-        int lps[] = new int[M];
-        int j = 0; // index for pat[]
+        char [] word = txt.toCharArray();
+        char [] window = pat.toCharArray();
 
-        // Preprocess the pattern (calculate lps[]
-        // array)
-        computeLPSArray(pat, M, lps);
-
-        int i = 0; // index for txt[]
-        while (i < N) {
-            if (pat.charAt(j) == txt.charAt(i)) {
-                j++;
-                i++;
-            }
-            if (j == M) {
-                j = lps[j - 1];
-                return true;
+        UpperFor:
+        for (int i = 0; i < word.length - window.length + 1; i++) {
+            for (int j = 0; j < window.length; j++) {
+                char c0 = word[i + j];
+                char c1 = window[j];
+                if(c0 != c1){
+                    continue UpperFor;
+                }
             }
 
-            // mismatch after j matches
-            else if (i < N && pat.charAt(j) != txt.charAt(i)) {
-                // Do not match lps[0..lps[j-1]] characters,
-                // they will match anyway
-                if (j != 0)
-                    j = lps[j - 1];
-                else
-                    i = i + 1;
-            }
+            return true;
         }
+
         return false;
     }
 
-    private static void computeLPSArray(String pat, int M, int lps[])
-    {
-        // length of the previous longest prefix suffix
-        int len = 0;
-        int i = 1;
-        lps[0] = 0; // lps[0] is always 0
-
-        // the loop calculates lps[i] for i = 1 to M-1
-        while (i < M) {
-            if (pat.charAt(i) == pat.charAt(len)) {
-                len++;
-                lps[i] = len;
-                i++;
-            }
-            else // (pat[i] != pat[len])
-            {
-                // This is tricky. Consider the example.
-                // AAACAAAA and i = 7. The idea is similar
-                // to search step.
-                if (len != 0) {
-                    len = lps[len - 1];
-
-                    // Also, note that we do not increment
-                    // i here
-                }
-                else // if (len == 0)
-                {
-                    lps[i] = len;
-                    i++;
-                }
-            }
-        }
-    }
 
 }
