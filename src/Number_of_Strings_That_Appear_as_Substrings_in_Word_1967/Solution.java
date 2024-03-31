@@ -16,7 +16,7 @@ public class Solution {
 
         int counter = 0;
         for (int i = 0; i < patterns.length; i++) {
-            if(Search(patterns[i], word))
+            if(word.contains(patterns[i]))
                 counter++;
         }
 
@@ -24,26 +24,6 @@ public class Solution {
     }
 
 
-    private static boolean Search(String pat, String txt) {
-
-        char [] word = txt.toCharArray();
-        char [] window = pat.toCharArray();
-
-        UpperFor:
-        for (int i = 0; i < word.length - window.length + 1; i++) {
-            for (int j = 0; j < window.length; j++) {
-                char c0 = word[i + j];
-                char c1 = window[j];
-                if(c0 != c1){
-                    continue UpperFor;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
 
 
 }
