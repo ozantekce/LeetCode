@@ -17,20 +17,20 @@ public class Solution {
     public static int countWays(List<Integer> nums) {
 
         int counter = 0;
-        Collections.sort(nums);
-        int n = nums.size();
+        int [] array = countingSort(nums);
+        int n = array.length;
         int selectedCount = 0;
         int maxSelected = -1;
-        int minNonselected = nums.get(0);
+        int minNonselected = array[0];
 
-        for (int i = 0; i < nums.size(); i++) {
+        for (int i = 0; i < array.length; i++) {
             if(meetConditions(selectedCount, maxSelected, minNonselected, n)){
                 counter++;
             }
             selectedCount++;
-            maxSelected = nums.get(selectedCount - 1);
+            maxSelected = array[selectedCount - 1];
             if(selectedCount < n)
-                minNonselected = nums.get(selectedCount);
+                minNonselected = array[selectedCount];
             else
                 minNonselected = 0;
         }
@@ -42,30 +42,36 @@ public class Solution {
     }
 
 
+    private static int[] countingSort(List<Integer> nums) {
+        if (nums == null || nums.isEmpty()) {
+            return new int[0];
+        }
+
+        int[] counter = new int[nums.size()];
+        int[] sortedArray = new int[nums.size()];
+
+        for (int num : nums) {
+            counter[num]++;
+        }
+
+        for (int i = 1; i < counter.length; i++) {
+            counter[i] += counter[i - 1];
+        }
+
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            sortedArray[counter[nums.get(i)] - 1] = nums.get(i);
+            counter[nums.get(i)]--;
+        }
+
+        return sortedArray;
+    }
+
+
     private static  boolean meetConditions(int selectedCount, int maxSelected, int minNonselected, int n){
-        if(selectedCount == 0)
-            return  selectedCount < minNonselected;
-        if(selectedCount == n)
-            return selectedCount > maxSelected;
-        return selectedCount > maxSelected && selectedCount < minNonselected;
+        if(selectedCount == 0) return  selectedCount < minNonselected;
+        else if(selectedCount == n)  return selectedCount > maxSelected;
+        else return selectedCount > maxSelected && selectedCount < minNonselected;
     }
 
-
-    /*
-    private static boolean meetConditions(List<Integer> selecteds, List<Integer> nonselecteds){
-
-        int selectedCount = selecteds.size();
-        for (int i = 0; i < selecteds.size(); i++) {
-            if(selectedCount <= selecteds.get(i))
-                return false;
-        }
-
-        for (int i = 0; i < nonselecteds.size(); i++) {
-            if(selectedCount >= nonselecteds.get(i))
-                return false;
-        }
-        return true;
-    }
-    */
 
 }
