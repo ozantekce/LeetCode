@@ -14,62 +14,37 @@ public class Solution {
 
 
     public static List<List<Integer>> permute(int[] nums) {
-
         List<List<Integer>> result = new ArrayList<>();
-        backtracking(nums, result, new MyList(nums.length));
+        backtracking(nums, result,0);
         return result;
     }
 
-    private static void backtracking(int[] nums, List<List<Integer>> result, MyList current){
+    private static void backtracking(int[] nums, List<List<Integer>> result, int size){
 
-        if(current.size() == nums.length){
-            result.add(current.getAsList());
-            return;
-        }
-        for (int i = 0; i < nums.length; i++) {
-            if(current.contains(nums[i]))
-                continue;
-            current.add(nums[i]);
-            backtracking(nums,result,current);
-            current.removeLast();
-        }
-
-    }
-
-    private static class MyList{
-        private boolean set [];
-        private int nums [];
-        private int size;
-
-        public MyList(int capacity){
-            nums = new int[capacity];
-            size = 0;
-            set = new boolean[22];
-        }
-
-        public void add(int num){
-            nums[size++] = num;
-            set[num+10] = true;
-        }
-        public void removeLast(){
-            set[nums[size-1]+10] = false;
-            size--;
-        }
-
-        public List<Integer> getAsList() {
-            List<Integer> list = new ArrayList<>();
+        if(size == nums.length){
+            List<Integer> list = new ArrayList<>(nums.length);
             for (int i = 0; i < size; i++) {
                 list.add(nums[i]);
             }
-            return list;
+            result.add(list);
+            return;
         }
+        for (int i = size; i < nums.length; i++) {
 
-        public int size(){
-            return size;
-        }
+            int seq = size;
+            int nseq = nums[seq];
+            int ni = nums[i];
 
-        public boolean contains(int num){
-            return set[num+10];
+            nums[i] = nseq;
+            nums[seq] = ni;
+
+            size++;
+            backtracking(nums,result,size);
+            size--;
+
+            nums[seq] = nseq;
+            nums[i] = ni;
+
         }
 
     }
