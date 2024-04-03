@@ -15,17 +15,19 @@ public class Solution {
     }
 
 
-    private static int Memory [][][];
+    private static int Memory [][];
 
     public static int stoneGameII(int[] piles) {
-        Memory = new int[2][piles.length+1][piles.length];
-        for (int i = 0; i < Memory.length; i++) {
-            for (int j = 0; j < Memory[0].length; j++) {
-                Arrays.fill(Memory[i][j], -1);
-            }
+        Memory = new int[piles.length+1][piles.length];
+        for (int[] ints : Memory) {
+            Arrays.fill(ints, -1);
         }
-        int a = recursive(piles, 0, 1, true);
-        return a;
+        int sum = 0;
+        for (int pile : piles) {
+            sum += pile;
+        }
+        int diff = recursive(piles, 0, 1, true);
+        return (sum+diff)/2;
     }
 
 
@@ -34,36 +36,20 @@ public class Solution {
         if(i >= nums.length){
             return 0;
         }
-        if(turn){
-            if(Memory[1][m][i] != -1)
-                return Memory[1][m][i];
+        if(Memory[m][i] != -1)
+            return turn ? Memory[m][i] : -Memory[m][i];
 
-            int max = Integer.MIN_VALUE;
-            int c = 0;
-            for (int j = 1; j <= 2 * m; j++) {
-                if(i+j > nums.length){
-                    break;
-                }
-                c += nums[i+j-1];
-                max = Math.max(max, c + recursive(nums, i + j, Math.max(m, j), false));
+        int max = Integer.MIN_VALUE;
+        int c = 0;
+        for (int j = 1; j <= 2 * m; j++) {
+            if(i+j > nums.length){
+                break;
             }
-            Memory[1][m][i] = max;
-            return max;
-        }else{
-            if(Memory[0][m][i] != -1)
-                return Memory[0][m][i];
-
-            int min = Integer.MAX_VALUE;
-            for (int j = 1; j <= 2 * m; j++) {
-                if(i+j > nums.length){
-                    break;
-                }
-                min = Math.min(min, recursive(nums,i + j, Math.max(m, j), true));
-            }
-            Memory[0][m][i] = min;
-            return min;
+            c += nums[i+j-1];
+            max = Math.max(max, c + recursive(nums, i + j, Math.max(m, j), false));
         }
-
+        Memory[m][i] = max;
+        return turn ? max : -max;
     }
 
 
