@@ -16,40 +16,42 @@ public class Solution {
 
 
     private static int Memory [][];
-
+    private static int PrefixSums[];
     public static int stoneGameII(int[] piles) {
         Memory = new int[piles.length+1][piles.length];
         for (int[] ints : Memory) {
             Arrays.fill(ints, -1);
         }
-        int sum = 0;
-        for (int pile : piles) {
-            sum += pile;
+        PrefixSums = new int[piles.length+1];
+        for (int i = 0; i < piles.length; i++) {
+            PrefixSums[i + 1] = PrefixSums[i] + piles[i];
         }
-        int diff = recursive(piles, 0, 1, true);
-        return (sum+diff)/2;
+        int diff = recursive(piles, 0, 1, 1);
+        return (PrefixSums[PrefixSums.length-1]+diff)/2;
     }
 
 
 
-    private static int recursive(int [] nums, int i, int m, boolean turn){
+    private static int recursive(int [] nums, int i, int m, int turn){
         if(i >= nums.length){
             return 0;
         }
         if(Memory[m][i] != -1)
-            return turn ? Memory[m][i] : -Memory[m][i];
+            return turn * Memory[m][i];
 
         int max = Integer.MIN_VALUE;
         int c = 0;
-        for (int j = 1; j <= 2 * m; j++) {
-            if(i+j > nums.length){
-                break;
-            }
-            c += nums[i+j-1];
-            max = Math.max(max, c + recursive(nums, i + j, Math.max(m, j), false));
+        int maxJ = 2 * m;
+
+        if(i+maxJ > nums.length)
+            maxJ = nums.length - i;
+
+        for (int j = maxJ; j >= 1; j--) {
+            c = PrefixSums[i + j] - PrefixSums[i];
+            max = Math.max(max, c + recursive(nums, i + j, Math.max(m, j), -1));
         }
         Memory[m][i] = max;
-        return turn ? max : -max;
+        return turn * max;
     }
 
 
