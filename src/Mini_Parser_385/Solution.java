@@ -18,82 +18,89 @@ public class Solution {
     }
 
 
-
     public static NestedInteger deserialize(String s) {
 
-        Stack<NestedInteger> stack = new Stack<>();
-
         char[] chars = s.toCharArray();
+        int stackCapacity = 0;
+        int listCount = 0;
+        for (char c : chars) {
+            if (c == '['){
+                listCount++;
+                stackCapacity = Math.max(listCount, stackCapacity);
+            }else if(c == ']'){
+                listCount--;
+            }
+        }
+
+        NestedInteger[] stack = new NestedInteger[stackCapacity];
+        int size = 0;
         int value = 0;
         boolean readingNum = false;
-        boolean isPositive = true;
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
-            if(c == '['){
-                stack.push(new NestedInteger());
-            }else if(c == ','){
-                if(readingNum){
-                    if(!stack.isEmpty()){
-                        NestedInteger l = stack.peek();
-                        if(!isPositive) value *= -1;
-                        NestedInteger n = new NestedInteger(value);
-                        if(!l.isInteger()){
-                            l.add(n);
-                        }else{
-                            stack.push(n);
-                        }
-                        value = 0;
-                        readingNum = false;
-                        isPositive = true;
+        int sign = 1;
+        for (char c : chars) {
+            if (c == '[') {
+                stack[size++] = new NestedInteger();
+            }
+            else if (c == ',') {
+                if (readingNum && size != 0) {
+                    NestedInteger l = stack[size - 1];
+                    NestedInteger n = new NestedInteger(sign * value);
+                    if (!l.isInteger()) {
+                        l.add(n);
+                    } else {
+                        stack[size++] = n;
                     }
+                    value = 0;
+                    readingNum = false;
+                    sign = 1;
                 }
-            }else if(c == ']'){
-                if(readingNum){
-                    if(!stack.isEmpty()){
-                        NestedInteger l = stack.peek();
-                        if(!isPositive) value *= -1;
-                        NestedInteger n = new NestedInteger(value);
-                        if(!l.isInteger()){
-                            l.add(n);
-                        }else{
-                            stack.push(n);
-                        }
-                        value = 0;
-                        readingNum = false;
-                        isPositive = true;
+            }
+            else if (c == ']') {
+                if (readingNum && size != 0) {
+                    NestedInteger l = stack[size - 1];
+                    NestedInteger n = new NestedInteger(sign * value);
+                    if (!l.isInteger()) {
+                        l.add(n);
+                    } else {
+                        stack[size++] = n;
                     }
+                    value = 0;
+                    readingNum = false;
+                    sign = 1;
                 }
 
-                if(stack.size() >= 2){
-                    NestedInteger p0 = stack.pop();
-                    NestedInteger p1 = stack.pop();
-                    if(!p1.isInteger()){
+                if (size >= 2) {
+                    NestedInteger p0 = stack[--size];
+                    NestedInteger p1 = stack[--size];
+                    if (!p1.isInteger()) {
                         p1.add(p0);
-                        stack.push(p1);
-                    }else{
-                        stack.push(p1);
-                        stack.push(p0);
+                        stack[size++] = p1;
                     }
+                    if(size == 0)
+                        break;
+                } else {
+                    break;
                 }
 
-            }else if(c == '-'){
-                isPositive = false;
-            }else{
+            }
+            else if (c == '-') {
+                sign = -1;
+            }
+            else {
                 readingNum = true;
                 value *= 10;
                 value += (c - '0');
             }
         }
 
-        NestedInteger result = null;
-        if(!stack.isEmpty())
-            result = stack.pop();
+        NestedInteger result;
+        if(size != 0)
+            result = stack[--size];
         else
-            result = new NestedInteger(isPositive ? value : -value);
+            result = new NestedInteger(sign * value);
 
         return result;
     }
-
 
 
     private static class NestedInteger {
