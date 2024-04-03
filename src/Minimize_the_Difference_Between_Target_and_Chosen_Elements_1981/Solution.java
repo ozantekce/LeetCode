@@ -21,13 +21,13 @@ public class Solution {
     }
 
 
-    private static HashMap<Integer,Integer>[] Memory;
+    private static int[][] Memory;
     private static int[] RowToMin;
 
     public static int minimizeTheDifference(int[][] mat, int target) {
-        Memory = new HashMap[mat.length];
+        Memory = new int [mat.length][target+1];
         for (int i = 0; i < Memory.length; i++) {
-            Memory[i] = new HashMap<>();
+            Arrays.fill(Memory[i], -1);
         }
 
         RowToMin = new int[mat.length];
@@ -55,16 +55,14 @@ public class Solution {
             return absTarget;
         }
 
-        if(Memory[row].containsKey(target))
-            return Memory[row].get(target);
-
         if(target <= 0){
             int minAbsTarget = RowToMin[mat.length-1] - RowToMin[row-1] + absTarget;
-            Memory[row].put(target, minAbsTarget);
+            //Memory[row][target] = minAbsTarget;
             return minAbsTarget;
         }
 
-
+        if(Memory[row][target] != -1)
+            return Memory[row][target];
 
         int minDiff = Integer.MAX_VALUE;
 
@@ -73,7 +71,7 @@ public class Solution {
             int diff = recursive(mat,row + 1,target-val);
             minDiff = Math.min(minDiff, diff);
         }
-        Memory[row].put(target, minDiff);
+        Memory[row][target] = minDiff;
         return minDiff;
     }
 
