@@ -2,7 +2,6 @@ package Mini_Parser_385;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class Solution {
@@ -11,14 +10,73 @@ public class Solution {
     public static void main(String[] args) {
 
         System.out.println(deserialize("324"));
+        System.out.println(deserialize("[324,8]"));
         System.out.println(deserialize("[123,[456,[789]]]"));
         System.out.println(deserialize("[[1,2],[3,4]]"));
         System.out.println(deserialize("-3"));
+        System.out.println(deserialize("[123,456,[788,799,833],[[]],10,[]]"));
 
     }
 
 
     public static NestedInteger deserialize(String s) {
+        if(!s.contains("[")){
+            return new NestedInteger(Integer.parseInt(s));
+        }
+        NestedInteger root = new NestedInteger();
+        recursiveSolution(s.toCharArray(), 1, root);
+        return root;
+    }
+
+
+    public static int recursiveSolution(char[] chars, int i, NestedInteger root) {
+
+        int value = 0;
+        boolean readingNum = false;
+        int sign = 1;
+        while (i < chars.length-1) {
+            char c = chars[i];
+            if (c == '[') {
+                NestedInteger child = new NestedInteger();
+                i = recursiveSolution(chars, i+1, child);
+                root.add(child);
+            }
+            else if (c == ',') {
+                if (readingNum) {
+                    root.add(new NestedInteger(sign * value));
+                    value = 0;
+                    readingNum = false;
+                    sign = 1;
+                }
+                i++;
+            }
+            else if (c == ']') {
+                if (readingNum) {
+                    root.add(new NestedInteger(sign * value));
+                }
+                return i+1;
+            }
+            else if (c == '-') {
+                sign = -1;
+                i++;
+            }
+            else {
+                readingNum = true;
+                value *= 10;
+                value += (c - '0');
+                i++;
+            }
+        }
+
+        if(readingNum){
+            root.add(new NestedInteger(sign * value));
+        }
+
+        return i+1;
+    }
+
+
+    public static NestedInteger stackSolution(String s) {
 
         char[] chars = s.toCharArray();
         int stackCapacity = 0;
