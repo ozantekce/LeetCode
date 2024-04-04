@@ -10,6 +10,10 @@ public class Solution {
 
         System.out.println(minimizeTheDifference(new int[][]{{1,2,3},{4,5,6},{7,8,9}},13));
         System.out.println(minimizeTheDifference(new int[][]{{1},{2},{3}},100));
+        System.out.println(minimizeTheDifferenceDp(new int[][]{{1,2,9,8,7}},6));
+        System.out.println(minimizeTheDifferenceDp(new int[][]{{1},{2},{3}},100));
+
+        /*
         System.out.println(minimizeTheDifference(new int[][]
                 {
                     {10,3,7,7,9,6,9,8,9,5},
@@ -17,7 +21,9 @@ public class Solution {
                     {3,4,4,1,3,6,3,3,9,9},
                     {6,9,9,3,8,7,9,6,10,6},
                 },5));
+*/
 
+        System.out.println(minimizeTheDifference(new int[][]{{15,15},{5,15},{2,15}},29));
     }
 
 
@@ -74,6 +80,56 @@ public class Solution {
         Memory[row][target] = minDiff;
         return minDiff;
     }
+
+    public static int minimizeTheDifferenceDp(int[][] mat, int target) {
+        int n = mat.length;
+        int m = mat[0].length;
+        int maxPossibleSum = 0;
+        int currentMaxSum = 0;
+
+        for (int i = 0; i < n; i++) {
+            int max = 0;
+            for (int j = 0; j < m; j++) {
+                max = Math.max(max, mat[i][j]);
+            }
+            maxPossibleSum += max;
+        }
+
+        int[][] dp = new int[n][maxPossibleSum + 1];
+
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        }
+
+        for (int j = 0; j < m; j++) {
+            dp[0][mat[0][j]] = Math.abs(target - mat[0][j]);
+            currentMaxSum = Math.max(currentMaxSum, mat[0][j]);
+        }
+
+        for (int i = 1; i < n; i++) {
+            int nextMaxSum = currentMaxSum;
+            for (int j = 0; j <= currentMaxSum; j++) {
+                if (dp[i - 1][j] != Integer.MAX_VALUE) {
+                    for (int k = 0; k < m; k++) {
+                        int newSum = j + mat[i][k];
+                        dp[i][newSum] = Math.min(dp[i][newSum], Math.abs(target - newSum));
+                        nextMaxSum = Math.max(nextMaxSum, newSum);
+                    }
+                }
+            }
+            currentMaxSum = nextMaxSum;
+        }
+
+        int minDiff = Integer.MAX_VALUE;
+        for (int j = 0; j <= currentMaxSum; j++) {
+            minDiff = Math.min(minDiff, dp[n - 1][j]);
+        }
+
+        return minDiff;
+    }
+
+
+
 
 
 }
