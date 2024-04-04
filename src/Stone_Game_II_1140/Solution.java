@@ -40,14 +40,16 @@ public class Solution {
             return turn * Memory[m][i];
 
         int max = Integer.MIN_VALUE;
-        int c = 0;
         int maxJ = 2 * m;
 
-        if(i+maxJ > nums.length)
+        if(i+maxJ > nums.length){
             maxJ = nums.length - i;
+            Memory[m][i] = (PrefixSums[i + maxJ] - PrefixSums[i]);
+            return Memory[m][i] * turn;
+        }
 
         for (int j = maxJ; j >= 1; j--) {
-            c = PrefixSums[i + j] - PrefixSums[i];
+            int c = PrefixSums[i + j] - PrefixSums[i];
             max = Math.max(max, c + recursive(nums, i + j, Math.max(m, j), -1));
         }
         Memory[m][i] = max;
