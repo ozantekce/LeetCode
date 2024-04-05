@@ -1,6 +1,7 @@
 package Shuffle_an_Array_384;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Solution {
 
@@ -22,16 +23,11 @@ public class Solution {
     }
 
     public int[] reset() {
-
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = original[i];
-        }
-        return nums;
+        return original;
     }
 
     public int[] shuffle() {
-
-        for (int i = nums.length-1; i > 0; i--) {
+        for (int i = nums.length-1; i > 1; i--) {
             int j = (int)(Math.random()*(i+1));
             int temp = nums[i];
             nums[i] = nums[j];
@@ -39,7 +35,6 @@ public class Solution {
         }
         return nums;
     }
-
 
 
 }
