@@ -21,41 +21,47 @@ public class Solution {
         char lastChar = chars[0];
         char currentChar;
 
-        for (int i = 1; i < chars.length+1; i++) {
-            if(i < chars.length)
-                currentChar = chars[i];
-            else
-                currentChar = ' ';
-
+        for (int i = 1; i < chars.length; i++) {
+            currentChar = chars[i];
             if(lastChar != currentChar){
-                int count = i - startIndex;
-                int size = 0;
-                int tempNum = count;
-                while (tempNum > 0){
-                    tempNum /= 10;
-                    size++;
-                }
-                //System.out.println(lastChar +" "+ size+" "+count);
-                int increaseWriteIndex = 1;
-                chars[writeIndex] = lastChar;
-                if(count > 1){
-                    while (count > 0){
-                        int n = count % 10;
-                        count /= 10;
-                        chars[writeIndex + size--] = (char) ('0' + n);
-                        increaseWriteIndex++;
-                    }
-                }
-                writeIndex += increaseWriteIndex;
+                writeIndex = updateNums(i,startIndex,writeIndex,lastChar,chars);
                 startIndex = i;
-                //System.out.println(Arrays.toString(chars));
             }
-
             lastChar = currentChar;
         }
-
-
+        writeIndex = updateNums(chars.length, startIndex,writeIndex,lastChar,chars);
         return writeIndex;
     }
+
+
+    private static int updateNums(int i,int startIndex ,int writeIndex,char lastChar, char [] chars){
+
+        int count = i - startIndex;
+        if(count == 1){
+            chars[writeIndex] = lastChar;
+            return  writeIndex + 1;
+        }
+
+        int size = 1;
+        if(count >= 1000) size = 4;
+        else if(count >= 100) size = 3;
+        else if(count >= 10) size = 2;
+
+        //System.out.println(lastChar +" "+ size+" "+count);
+        int increaseWriteIndex = 1;
+        chars[writeIndex] = lastChar;
+        if(count > 1){
+            while (count > 0){
+                int n = count % 10;
+                count /= 10;
+                chars[writeIndex + size--] = (char) ('0' + n);
+                increaseWriteIndex++;
+            }
+        }
+        writeIndex += increaseWriteIndex;
+        //System.out.println(Arrays.toString(chars));
+        return writeIndex;
+    }
+
 
 }
