@@ -25,9 +25,8 @@ public class Solution {
         int[] res = new int[size];
         int j = 0;
         for (int i = 1; i < nums.length; i+=2) {
-            for (int k = 0; k < nums[i-1]; k++) {
-                res[j++] = nums[i];
-            }
+            Arrays.fill(res, j, j + nums[i-1],nums[i]);
+            j += nums[i-1];
         }
 
         return res;
