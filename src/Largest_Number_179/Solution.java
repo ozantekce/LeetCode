@@ -10,26 +10,28 @@ public class Solution {
 
         //System.out.println(largestNumber(new int[]{10,2}));
         //System.out.println(largestNumber(new int[]{3,30,34,5,9}));
-        System.out.println(largestNumber(new int[]{34323,3432}));
-        System.out.println(largestNumber(new int[]{432,43243}));
+        //System.out.println(largestNumber(new int[]{34323,3432}));
+        //System.out.println(largestNumber(new int[]{432,43243}));
+        System.out.println(largestNumber(new int[]{999999998,999999997,999999999}));
 
     }
-
 
     public static String largestNumber(int[] nums) {
 
         Num[] array = new Num[nums.length];
+        boolean allZero = true;
         for (int i = 0; i < nums.length; i++) {
+            if(nums[i]!=0)
+                allZero = false;
             array[i] = new Num(nums[i]);
         }
+        if(allZero)
+            return "0";
         Arrays.sort(array);
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
-            if(array[i].num == 0 && stringBuilder.isEmpty()) continue;
             stringBuilder.append(array[i].num);
         }
-        if(stringBuilder.isEmpty() && array.length > 0)
-            stringBuilder.append(0);
         return stringBuilder.toString();
     }
 
@@ -37,18 +39,18 @@ public class Solution {
     private static class Num implements Comparable<Num>{
 
         private int num;
-        private int mainVal = 0;
-        private int size = 1;
+        private int mainVal;
+        private long pow;
 
         public Num(int n) {
             this.num = n;
+            pow = 10;
             while (n >= 10){
                 n /= 10;
-                size++;
+                pow *= 10;
             }
             mainVal = n;
         }
-
 
 
         @Override
@@ -59,8 +61,8 @@ public class Solution {
             else if(mainVal < o.mainVal)
                 return +1;
 
-            long v0 = (long) (num * Math.pow(10, o.size) + o.num);
-            long v1 = (long) (o.num * Math.pow(10, size) + num);
+            long v0 = num * o.pow + o.num;
+            long v1 = o.num * pow + num;
 
             if(v0 > v1)
                 return -1;
@@ -70,7 +72,7 @@ public class Solution {
             return 0;
 
         }
-    }
 
+    }
 
 }
