@@ -20,51 +20,42 @@ public class Solution {
         if(!positive){
             num *= -1;
         }
-        long temp = num;
-        int size = 0;
-        while (temp>0){
-            size++;
-            temp/=10;
-        }
-        byte [] array = new byte[size];
-        int i = size - 1;
+
+        byte[] counter = new byte[10];
+        int minPositive = 10;
         while (num>0){
-            array[i--] = (byte) (num%10);
+            int n = (int) (num%10);
+            if(positive && minPositive != 1 && n < minPositive && n != 0) {
+                minPositive = n;
+            }
+            counter[n]++;
             num/=10;
         }
 
         long result = 0;
-        Arrays.sort(array);
-        //System.out.println(Arrays.toString(array));
-
         if(positive){
-
-            for (int j = 0; j < array.length; j++) {
-                byte b = array[j];
-                if(b != 0){
-                    result = b;
-                    array[j] = 10;
-                    break;
+            counter[minPositive]--;
+            result = minPositive;
+            for (byte i = 0; i < counter.length; i++) {
+                for (byte j = 0; j < counter[i]; j++) {
+                    result*=10;
+                    result+=i;
                 }
             }
-            long mul = 10;
-            for (int j = 0; j < array.length; j++) {
-                byte b = array[j];
-                if(b == 10) continue;
-                result *= mul;
-                result += b;
-            }
-
         }else{
-            long mul = 1;
-            for (int j = 0; j < array.length; j++) {
-                result += array[j] * mul;
-                mul *= 10;
+            for (byte i = (byte) (counter.length - 1); i >= 0; i--) {
+                for (byte j = 0; j < counter[i]; j++) {
+                    result*=10;
+                    result+=i;
+                }
             }
-            result *= -1;
         }
 
-        return result;
+        return positive ? result : -result;
     }
+
+
+
+
 
 }
