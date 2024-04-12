@@ -19,64 +19,65 @@ public class Solution {
 
     public static String predictPartyVictory(String senate) {
 
-        Queue<MyInteger> queue = new ArrayDeque<>();
-        MyInteger last;
-        queue.add(last = new MyInteger(1, senate.charAt(0) == 'R'));
+        Queue<ValuePartyPair> queue = new ArrayDeque<>(senate.length());
+        ValuePartyPair last;
+        queue.add(last = new ValuePartyPair(1, senate.charAt(0) == 'R'));
+        // Merge elements
         for (int i = 1; i < senate.length(); i++) {
             boolean isR = senate.charAt(i) == 'R';
             if(isR == last.party){
+                // merge with last
                 last.value++;
             }else{
-                queue.add(last = new MyInteger(1, isR));
+                // create new
+                queue.add(last = new ValuePartyPair(1, isR));
             }
         }
 
-        while (queue.size() > 1){
-            MyInteger current = queue.poll();
-            int moveCount = current.value;
-            while (moveCount > 0 && queue.size() > 0){
-                MyInteger next = queue.peek();
-                if(current.party == next.party){
-                    // Merge
-                    current.value += next.value;
-                    moveCount += next.value;
-                    queue.poll();
-                }else{
-                    // Ban
-                    int nextCount = next.value;
-                    if(moveCount >= nextCount){
-                        moveCount -= nextCount;
-                        queue.poll();
-                    }else{
-                        nextCount -= moveCount;
-                        next.value = nextCount;
-                        break;
-                    }
+        ValuePartyPair current = queue.poll();
+        int moveCount = current.value;
+        while (queue.size() > 0){
+            ValuePartyPair next = queue.peek();
+            if(current.party == next.party){
+                // Merge
+                current.value += next.value;    // increase current value
+                moveCount += next.value;    // increase move count
+                queue.poll();   // remove merged element
+            }else{
+                // Ban
+                int nextCount = next.value;
+                // It can remove next completely
+                if(moveCount > nextCount){
+                    moveCount -= nextCount; // lost move count
+                    queue.poll();   // remove next
+                }
+                // It cannot remove next completely
+                else{
+                    // It removes as much as it can
+                    next.value -= moveCount;
+                    // Re add current
+                    queue.add(current);
+                    // Update current with next
+                    current = queue.poll();
+                    moveCount = current.value;
                 }
             }
-            queue.add(current);
         }
 
-
-        return queue.poll().party ? "Radiant":"Dire";
+        return current.party ? "Radiant":"Dire";
     }
 
-    private static class MyInteger{
+    private static class ValuePartyPair {
 
         private int value;
         private boolean party;
-
-        public MyInteger(int value, boolean party) {
+        public ValuePartyPair(int value, boolean party) {
             this.value = value;
             this.party = party;
         }
-
-
-        @Override
-        public String toString() {
-            return ""+ value;
-        }
     }
+
+
 
 
 }
