@@ -2,8 +2,6 @@ package Dota2_Senate_649;
 
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 
 public class Solution {
@@ -23,50 +21,35 @@ public class Solution {
 
         Queue<MyInteger> queue = new ArrayDeque<>();
         MyInteger last;
-        if(senate.charAt(0) == 'R'){
-            queue.add(last = new MyInteger(1));
-        }else{
-            queue.add(last = new MyInteger(-1));
-        }
+        queue.add(last = new MyInteger(1, senate.charAt(0) == 'R'));
         for (int i = 1; i < senate.length(); i++) {
-            char currentChar = senate.charAt(i);
-            int currentValue;
-            if(currentChar == 'R'){
-                currentValue = 1;
-            }else{
-                currentValue = -1;
-            }
-
-            if(currentValue>0 && last.value>0){
+            boolean isR = senate.charAt(i) == 'R';
+            if(isR == last.party){
                 last.value++;
-            }else if(currentValue<0 && last.value<0){
-                last.value--;
             }else{
-                queue.add(last = new MyInteger(currentValue));
+                queue.add(last = new MyInteger(1, isR));
             }
         }
 
         while (queue.size() > 1){
             MyInteger current = queue.poll();
-            int moveCount = Math.abs(current.value);
+            int moveCount = current.value;
             while (moveCount > 0 && queue.size() > 0){
                 MyInteger next = queue.peek();
-                if(current.value > 0 && next.value > 0){
+                if(current.party == next.party){
+                    // Merge
                     current.value += next.value;
-                    moveCount += Math.abs(next.value);
-                    queue.poll();
-                }else if(current.value < 0 && next.value < 0){
-                    current.value += next.value;
-                    moveCount += Math.abs(next.value);
+                    moveCount += next.value;
                     queue.poll();
                 }else{
-                    int nextCount = Math.abs(next.value);
+                    // Ban
+                    int nextCount = next.value;
                     if(moveCount >= nextCount){
                         moveCount -= nextCount;
                         queue.poll();
                     }else{
                         nextCount -= moveCount;
-                        next.value = nextCount * (next.value > 0 ? 1 : -1);
+                        next.value = nextCount;
                         break;
                     }
                 }
@@ -75,15 +58,20 @@ public class Solution {
         }
 
 
-        return queue.poll().value > 0 ? "Radiant":"Dire";
+        return queue.poll().party ? "Radiant":"Dire";
     }
 
     private static class MyInteger{
-        int value;
 
-        public MyInteger(int value) {
+        private int value;
+        private boolean party;
+
+        public MyInteger(int value, boolean party) {
             this.value = value;
+            this.party = party;
         }
+
+
         @Override
         public String toString() {
             return ""+ value;
