@@ -1,7 +1,9 @@
 package Group_the_People_Given_the_Group_Size_They_Belong_To_1282;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class Solution {
 
@@ -18,25 +20,24 @@ public class Solution {
     public static List<List<Integer>> groupThePeople(int[] groupSizes) {
 
         ArrayList<Integer>[] table = new ArrayList[groupSizes.length+1];
-        for (int i = 0; i < table.length; i++) {
-            table[i] = new ArrayList<>();
-        }
-
         List<List<Integer>> res = new ArrayList<>();
 
         for (int i = 0; i < groupSizes.length; i++) {
             int num = groupSizes[i];
+            if(table[num] == null){
+                table[num] = new ArrayList<>(num);
+            }
             table[num].add(i);
             if(table[num].size() == num){
-                ArrayList<Integer> temp = new ArrayList<>(table[num]);
-                res.add(temp);
-                table[num].clear();
+                res.add(table[num]);
+                table[num] = null;
             }
         }
 
 
         return res;
     }
+
 
 
 }
