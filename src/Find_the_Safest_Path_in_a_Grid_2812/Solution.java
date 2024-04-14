@@ -60,10 +60,12 @@ public class Solution {
 
     public static int maximumSafenessFactor(List<List<Integer>> grid) {
 
-        if(grid.get(0).get(0) == 1)
-            return 0;
 
         int n = grid.size();
+
+        if(grid.get(0).get(0) == 1 || grid.get(n-1).get(n-1) == 1) {
+            return 0;
+        }
 
         Queue<Int2> bfs = new ArrayDeque<>();
 
