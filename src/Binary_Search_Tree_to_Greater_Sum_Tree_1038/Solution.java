@@ -10,28 +10,25 @@ public class Solution {
     }
 
     public static TreeNode bstToGst(TreeNode root) {
-
-        List<Integer> list1 = new ArrayList<>();
-        collectValues(root, list1);
+        collectValues(root, 0);
         return root;
     }
 
     // 8, 7, 6, 5, 4, 3, 2, 1, 0
     //
-    private static void collectValues(TreeNode root, List<Integer> values){
+    private static int collectValues(TreeNode root, int increase){
+
+        root.val += increase;
 
         if(root.right != null){
-            collectValues(root.right, values);
+            root.val += collectValues(root.right, increase) - increase;
         }
-        values.add(root.val);
-        if(values.size() != 1){
-            int val = values.get(values.size()-2) + root.val;
-            values.set(values.size()-1, val);
-            root.val = val;
-        }
+
         if(root.left != null){
-            collectValues(root.left, values);
+            return collectValues(root.left, root.val);
         }
+
+        return root.val;
     }
 
 
