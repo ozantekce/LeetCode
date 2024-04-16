@@ -1,9 +1,6 @@
 package Reveal_Cards_In_Increasing_Order_950;
 
 import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class Solution {
 
@@ -20,7 +17,7 @@ public class Solution {
 
     public static int[] deckRevealedIncreasing(int[] deck) {
 
-        Arrays.sort(deck);
+        QuickSort_H(deck, 0, deck.length-1);
         DoubleLinkedList<Integer> res = new DoubleLinkedList<>();
         res.addFirst(deck[deck.length-1]);
         //System.out.println(res);
@@ -38,6 +35,44 @@ public class Solution {
         }
 
         return deck;
+    }
+
+
+    public static void QuickSort_H(int A[],int p, int r){
+        if(p<r){
+            int q = hoaresPartition(A,p,r);
+            QuickSort_H(A,p,q);
+            QuickSort_H(A,q+1,r);
+        }
+    }
+
+    public static int hoaresPartition(int A[], int p, int r){
+
+        int pivot = A[p];
+        int i = p-1;
+        int j = r+1;
+        while (true){
+
+            while (true){
+                j=j-1;
+                if(A[j]<=pivot)
+                    break;
+            }
+            while (true){
+                i=i+1;
+                if(A[i]>=pivot)
+                    break;
+            }
+            if(i<j){
+                int holder = A[i];
+                A[i] = A[j];
+                A[j] = holder;
+            }else{
+                return j;
+            }
+
+        }
+
     }
 
 
@@ -183,6 +218,5 @@ public class Solution {
 
 
     }
-
 
 }
