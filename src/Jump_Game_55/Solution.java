@@ -1,5 +1,10 @@
 package Jump_Game_55;
 
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Solution {
 
 
@@ -17,28 +22,23 @@ public class Solution {
         if(nums.length == 1){
             return true;
         }
+        boolean [] dp = new boolean[nums.length];
+        dp[0] = true;
+        for (int i = 0; i < nums.length-1 ; i++) {
+            if(!dp[i])
+                continue;
 
-        boolean [] dp = new boolean[nums.length + 1];
-        dp[nums.length - 1] = true;
-
-        for (int i = nums.length - 1; i >= 0 ; i--) {
-            if(dp[i]){
-
-                for (int j = i - 1; j >= 0; j--) {
-
-                    int diff = i - j;
-                    if(nums[j] >= diff){
-                        dp[j] = true;
-                        if(j == 0){
-                            return true;
-                        }
+            for (int j = 1; j <= nums[i] && i+j<nums.length ; j++) {
+                if(nums[i] >= j){
+                    dp[i+j] = true;
+                    if(i+j == nums.length-1){
+                        return true;
                     }
                 }
-
             }
         }
 
-        return false;
+        return dp[nums.length-1];
     }
 
     private static byte[] Memory;
