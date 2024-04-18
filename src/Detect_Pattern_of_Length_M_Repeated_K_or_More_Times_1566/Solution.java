@@ -17,16 +17,11 @@ public class Solution {
 
     public static boolean containsPattern(int[] arr, int m, int k) {
 
-
-        int [] window = new int[m];
-
         for (int i = 0; i < arr.length - m; i++) {
-            System.arraycopy(arr, i, window, 0, m);
             int f = 0;
             int c_k = k - 1;
             for (int j = i + m; j < arr.length; j++) {
-
-                if(arr[j] != window[f]){
+                if(arr[j] != arr[i + f]){
                     break;
                 }
                 f++;
@@ -41,8 +36,6 @@ public class Solution {
             }
 
         }
-
-
 
         return false;
     }
