@@ -1,43 +1,39 @@
 package Merge_Similar_Items_2363;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Solution {
 
     public static void main(String[] args) {
 
+        List<List<Integer>> res = mergeSimilarItems(new int[][]{{1,1},{4,5},{3,8}}, new int[][]{{3,1},{1,5}});
+        System.out.println(res);
     }
 
 
-    public List<List<Integer>> mergeSimilarItems(int[][] items1, int[][] items2) {
+    public static List<List<Integer>> mergeSimilarItems(int[][] items1, int[][] items2) {
 
-        TreeMap<Integer, int []> map = new TreeMap<>();
+        return new ArrayList<>() {
+            {
+                int[] items = new int[1001];
+                int size = 0;
+                for (int i = 0; i < items1.length; i++) {
+                    items[items1[i][0]] = items1[i][1];
+                    size = Math.max(size, items1[i][0]);
+                }
 
-        for (int i = 0; i < items1.length; i++) {
-            map.put(items1[i][0], items1[i]);
-        }
+                for (int i = 0; i < items2.length; i++) {
+                    items[items2[i][0]] += items2[i][1];
+                    size = Math.max(size, items2[i][0]);
+                }
 
-        for (int i = 0; i < items2.length; i++) {
+                for (int i = 0; i <= size; i++) {
+                    if(items[i] != 0)
+                        this.add(List.of(i, items[i]));
+                }
 
-            if(map.containsKey(items2[i][0])){
-                int [] array = map.get(items2[i][0]);
-                array[1] += items2[i][1];
-            }else{
-                map.put(items2[i][0], items2[i]);
             }
-            
-        }
-
-        List<List<Integer>> res = new ArrayList<>();
-        for (int[] v : map.values()) {
-            res.add(Arrays.asList(v[0],v[1]));
-        }
-
-
-        return res;
+        };
     }
 
 }
