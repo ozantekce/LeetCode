@@ -18,34 +18,24 @@ public class Solution {
     }
 
 
-    private static void iterative(List<Integer> list, TreeNode root){
-
-        if(root == null){
+    private static void iterative(List<Integer> list, TreeNode root) {
+        if (root == null) {
             return;
         }
 
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
+        TreeNode current = root;
 
-        while (!stack.isEmpty()){
-
-            TreeNode current = stack.pop();
-
-            if(current.right != null){
-                stack.push(current.right);
-            }
-
-            if(current.left != null){
+        while (current != null || !stack.isEmpty()) {
+            while (current != null) {
                 stack.push(current);
-                stack.push(current.left);
-                current.left = null;
-                current.right = null;
-            }else{
-                list.add(current.val);
+                current = current.left;
             }
 
+            current = stack.pop();
+            list.add(current.val);
+            current = current.right;
         }
-
     }
 
 
