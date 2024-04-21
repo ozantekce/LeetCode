@@ -14,62 +14,34 @@ public class Solution {
 
     public static String capitalizeTitle(String title) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        StringBuilder sub = new StringBuilder();
-        for (int i = 0; i < title.length(); i++) {
-            char c = title.charAt(i);
+        int start = 0;
+        char[] chars = title.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
             if(c == ' '){
-
-                char first = sub.charAt(0);
-                int start = 0;
-                if(sub.length() > 2){
-                    if(first>=97){
-                        first -= 32;
-                        sub.setCharAt(0, first);
-                    }
-                    start++;
-                }
-
-
-                for (int j = start; j < sub.length(); j++) {
-                    char s_c = sub.charAt(j);
-                    if(s_c < 97){
-                        s_c += 32;
-                        sub.setCharAt(j, s_c);
+                int length = i - start;
+                if(length > 2){
+                    if(chars[start]>=97){
+                        chars[start] -= 32;
                     }
                 }
-
-                stringBuilder.append(sub);
-                stringBuilder.append(' ');
-                sub.setLength(0);
-            }else{
-                sub.append(c);
+                start = i + 1;
+            }else if(c < 97){
+                c += 32;
+                chars[i] = c;
             }
 
         }
 
-        if(sub.length() != 0){
-            char first = sub.charAt(0);
-            int start = 0;
-            if(sub.length() > 2){
-                if(first>=97){
-                    first -= 32;
-                    sub.setCharAt(0, first);
-                }
-                start++;
+        int length = chars.length - start;
+        if(length > 2){
+            if(chars[start]>=97){
+                chars[start] -= 32;
             }
-
-            for (int j = start; j < sub.length(); j++) {
-                char s_c = sub.charAt(j);
-                if(s_c < 97){
-                    s_c += 32;
-                    sub.setCharAt(j, s_c);
-                }
-            }
-            stringBuilder.append(sub);
         }
 
-        return stringBuilder.toString();
+
+        return new String(chars);
     }
 
 
