@@ -9,29 +9,15 @@ public class Solution {
 
 
     public static String largestGoodInteger(String num) {
-        int size = 1;
-        char max = 0;
-        char l = num.charAt(0);
-        for (int i = 1; i < num.length(); i++) {
-            char c = num.charAt(i);
-            if(l == c){
-                size++;
-                if(size == 3){
-                    if(c > max){
-                        max = c;
-                    }
-                }
-            }else{
-                size = 1;
-                l = c;
+
+        String [] strings = new String[]{"999","888","777","666","555","444","333","222","111","000"};
+        for (String str : strings) {
+            if (num.contains(str)) {
+                return str;
             }
         }
-
-        if(max == 0)
-            return "";
-        else{
-            return new String(new char[]{max, max, max});
-        }
+        return "";
     }
+
 
 }
