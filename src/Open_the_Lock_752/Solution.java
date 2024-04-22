@@ -7,7 +7,7 @@ public class Solution {
 
     public static void main(String[] args) {
 
-        System.out.println(openLock(new String[]{"0201","0101","0102","1212","2002"},"0202"));
+        //System.out.println(openLock(new String[]{"0201","0101","0102","1212","2002"},"0202"));
         System.out.println(openLock(new String[]{"8887","8889","8878","8898","8788","8988","7888","9888"},"8888"));
 
     }
@@ -18,44 +18,38 @@ public class Solution {
         if(target.equals("0000"))
             return 0;
 
-        Queue<Integer> frontier = new ArrayDeque<>();
+        int i = 0;
+        int size = 0;
+        int [] frontier = new int[10000];
         int [] added = new int[10000];
         int start = 0;
 
-        int targetInt = 0;
-        targetInt += 1000 * (target.charAt(0) - '0');
-        targetInt += 100 * (target.charAt(1) - '0');
-        targetInt += 10 * (target.charAt(2) - '0');
-        targetInt += (target.charAt(3) - '0');
+        int targetInt = convertToInt(target);
 
-        frontier.add(start);
+        frontier[size++] = start;
         added[start] = -1;
 
-        for (int i = 0; i < deadends.length; i++) {
-            int deadend = 0;
-            deadend += 1000 * (deadends[i].charAt(0) - '0');
-            deadend += 100 * (deadends[i].charAt(1) - '0');
-            deadend += 10 * (deadends[i].charAt(2) - '0');
-            deadend += (deadends[i].charAt(3) - '0');
-            added[deadend] = -1;
-            if(deadend == 0){
+        for (String s : deadends) {
+            int deadened = convertToInt(s);
+            added[deadened] = -1;
+            if (deadened == 0) {
                 return -1;
             }
         }
 
-        while (!frontier.isEmpty()){
+        while (i < size){
 
-            int current = frontier.poll();
+            int current = frontier[i++];
             int currentCount = Math.max(added[current], 0);
             if(current == targetInt){
                 return currentCount;
             }
 
-            List<Integer> children = findChildren(current);
+            int[] children = findChildren(current);
 
             for (Integer child : children) {
                 if(added[child] == 0){
-                    frontier.add(child);
+                    frontier[size++] = child;
                     added[child] = currentCount + 1;
                 }
             }
@@ -64,45 +58,37 @@ public class Solution {
         return -1;
     }
 
-    
+    private static int convertToInt(String str){
+        int value = 0;
+        value += 1000 * (str.charAt(0) - '0');
+        value += 100 * (str.charAt(1) - '0');
+        value += 10 * (str.charAt(2) - '0');
+        value += (str.charAt(3) - '0');
+        return value;
+    }
 
 
-    private static List<Integer> cacheList = new ArrayList<>(8);
-    private static List<Integer> findChildren(int current){
+    private static int[] cache = new int[8];
+    private static int[] findChildren(int current){
 
-        cacheList.clear();
         int mul = 1;
         for (int i = 0; i < 4; i++) {
 
-            int num = current / mul;
-            num %= 10;
+            int num = (current / mul) % 10;
 
-            int forward = num + 1;
-            int backward = num - 1;
+            int forward = (num + 1) % 10;
+            int backward = (num - 1 + 10) % 10;
 
-            if(forward > 9){
-                forward = 0;
-            }
+            int childForward = (current - num * mul) + forward * mul;
+            int childBackward = (current - num * mul) + backward * mul;
 
-            int childForward = current;
-            childForward -= num * mul;
-            childForward += forward * mul;
-
-            if(backward < 0){
-                backward = 9;
-            }
-
-            int childBackward = current;
-            childBackward -= num * mul;
-            childBackward += backward * mul;
-
-            cacheList.add(childForward);
-            cacheList.add(childBackward);
+            cache[2 * i] = childForward;
+            cache[2 * i + 1] = (childBackward);
 
             mul *= 10;
         }
 
-        return cacheList;
+        return cache;
     }
 
 
