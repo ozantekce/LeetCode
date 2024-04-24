@@ -21,12 +21,14 @@ public class Solution {
             int gcd = nums[i];
             if(gcd == k){
                 res++;
+            }else if(gcd < k || gcd % k != 0){
+                continue;
             }
             for (int j = i+1; j < nums.length; j++) {
                 gcd = gcdByEuclidsAlgorithm(nums[j], gcd);
                 if(gcd == k){
                     res++;
-                }else if(gcd < k){
+                }else if(gcd < k || gcd % k != 0){
                     break;
                 }
             }
