@@ -18,32 +18,26 @@ public class Solution {
     public static int longestIdealString(String s, int k) {
 
         int n = s.length();
-        int[] memory = new int[n];
         int[] map = new int[26];
 
-        memory[n-1] = 1;
-        map[s.charAt(n-1) - 'a'] = n-1;
+        map[s.charAt(n-1) - 'a'] = 1;
 
         int res = 1;
         for (int i = 1; i < n; i++) {
-            int firstIndex = n-1-i;
+            int startIndex = n-1-i;
             int val;
             int max = 0;
-            char c0 = s.charAt(firstIndex);
+            char c0 = s.charAt(startIndex);
 
             for (int j = 0; j < 26; j++) {
                 int diff = Math.abs(c0 - ( j + 'a'));
                 if(diff <= k){
-                    int index = map[j];
-                    if(index > 0){
-                        int temp = memory[index];
-                        max = Math.max(max, temp);
-                    }
+                    int temp = map[j];
+                    max = Math.max(max, temp);
                 }
             }
-            memory[firstIndex] = max + 1;
             val = max + 1;
-            map[c0-'a'] = firstIndex;
+            map[c0-'a'] = max + 1;
             res = Math.max(val, res);
         }
 
