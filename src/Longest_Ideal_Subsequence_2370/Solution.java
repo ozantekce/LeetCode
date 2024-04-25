@@ -6,7 +6,7 @@ public class Solution {
 
     public static void main(String[] args) {
 
-        //System.out.println(longestIdealString("acfgbd",2));     // 4
+        System.out.println(longestIdealString("acfgbd",2));     // 4
         //System.out.println(longestIdealString("abcd",3));       // 4
         //System.out.println(longestIdealString("jxhwaysa",14));  // 5
         System.out.println(longestIdealString("eduktdb",15));   // 5
@@ -21,50 +21,19 @@ public class Solution {
         int[] map = new int[26];
 
         map[s.charAt(n-1) - 'a'] = 1;
-
         int res = 1;
-        for (int i = 1; i < n; i++) {
-            int startIndex = n-1-i;
-            int val;
+        for (int i = n-2; i >= 0; i--) {
             int max = 0;
-            char c0 = s.charAt(startIndex);
-
-            for (int j = 0; j < 26; j++) {
-                int diff = Math.abs(c0 - ( j + 'a'));
-                if(diff <= k){
-                    int temp = map[j];
-                    max = Math.max(max, temp);
-                }
+            int order = s.charAt(i) - 'a';
+            int start = Math.max(0, order-k);
+            int end = Math.min(order+k, 25);
+            for (int j = start; j <= end; j++) {
+                max = Math.max(max, map[j]);
             }
-            val = max + 1;
-            map[c0-'a'] = max + 1;
-            res = Math.max(val, res);
+            map[order] = max + 1;
+            res = Math.max(max + 1, res);
         }
-
         return res;
     }
 
-
-/*
-    public static int find(String s, int k, int first, int last){
-
-        if(memory[first] != 0){
-            return memory[first];
-        }
-
-        int max = 0;
-        char c0 = s.charAt(first);
-        for (int i = first+1; i <= last; i++) {
-            char c1 = s.charAt(i);
-            int diff = Math.abs(c0 - c1);
-            if(diff <= k){
-                int val = memory[i];
-                max = Math.max(max, val);
-            }
-        }
-
-        memory[first] = max + 1;
-        return max + 1;
-    }
-*/
 }
