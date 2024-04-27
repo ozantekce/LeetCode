@@ -1,5 +1,10 @@
 package Freedom_Trail_514;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
 public class Solution {
 
 
@@ -7,12 +12,11 @@ public class Solution {
 
         System.out.println(findRotateSteps("godding","gd"));
         System.out.println(findRotateSteps("godding","godding"));
+        System.out.println(findRotateSteps("xrrakuulnczywjs","jrlucwzakzussrlckyjjsuwkuarnaluxnyzcnrxxwruyr"));
+        System.out.println(findRotateSteps("ababcab","acbaacba"));
+        System.out.println(findRotateSteps("iotfo","fioot"));
 
     }
-
-
-    // g o d d i n g
-    // g o d d i n g
 
     private static int [][] Memory;
 
@@ -20,7 +24,6 @@ public class Solution {
         Memory = new int[ring.length()][key.length()];
         return recursive(0,0,ring,key);
     }
-
 
     private static int recursive(int i, int j, String ring, String key){
 
@@ -61,7 +64,6 @@ public class Solution {
         Memory[i][j] = Math.min(rightSideCost, leftSideCost);
         return Memory[i][j];
     }
-
 
 
 }
