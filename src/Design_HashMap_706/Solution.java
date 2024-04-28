@@ -40,7 +40,7 @@ public class Solution {
 
         private static class Node{
 
-            private final int range = 100;
+            private final int range = 10;
             private int value = -1;
             private Node[] nodes;
 
