@@ -27,40 +27,38 @@ public class Solution {
         int n = land.length;
         int m = land[0].length;
 
+        Queue<Int2> frontier = new ArrayDeque<>();
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                Int2 pos = new Int2(i, j);
-                if(land[i][j] == 1 ){
-                    Area area = new Area(n, m);
-                    Queue<Int2> frotier = new ArrayDeque<>();
-                    frotier.add(pos);
+                if(land[i][j] == 0)
+                    continue;
 
-                    while (!frotier.isEmpty()){
-                        Int2 current = frotier.poll();
-                        if(land[current.i][current.j] == 0)
-                            continue;
-                        area.add(current);
-                        land[current.i][current.j] = 0;
-                        Int2 right = getNeighborIndices(current, Direction.Right);
-                        Int2 down = getNeighborIndices(current, Direction.Down);
-                        if(isValidIndices(right, n, m) && land[right.i][right.j] == 1){
-                            frotier.add(right);
-                        }
-                        if(isValidIndices(down, n, m) && land[down.i][down.j] == 1){
-                            frotier.add(down);
-                        }
+                Int2 startPos = new Int2(i, j);
+                Area area = new Area(i, j, n, m);
+                frontier.add(startPos);
+
+                while (!frontier.isEmpty()){
+                    Int2 current = frontier.poll();
+                    if(land[current.i][current.j] == 0)
+                        continue;
+                    area.add(current);
+                    land[current.i][current.j] = 0;
+                    Int2 right = getNeighborIndices(current, Direction.Right);
+                    Int2 down = getNeighborIndices(current, Direction.Down);
+                    if(isValidIndices(right, n, m) && land[right.i][right.j] == 1){
+                        frontier.add(right);
                     }
-                    list.add(area.convertArray());
+                    if(isValidIndices(down, n, m) && land[down.i][down.j] == 1){
+                        frontier.add(down);
+                    }
                 }
+                list.add(area.getCorners());
 
             }
         }
 
-        int[][] res = new int[list.size()][4];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = list.get(i);
-        }
-        return res;
+        return list.toArray(new int[list.size()][]);
     }
 
     private static Int2 getNeighborIndices(Int2 indices, Direction direction){
@@ -76,41 +74,31 @@ public class Solution {
     }
 
     private static boolean isValidIndices(Int2 indices, int n, int m){
-        return !(indices.i<0 || indices.j<0 || indices.i>=n || indices.j>=m);
+        return indices.i >= 0 && indices.j >= 0 && indices.i < n && indices.j < m;
     }
 
 
     private static class Area{
 
-        private Int2 leftCorner;
-        private Int2 rightCorner;
+        private int[] corners;
 
         public Area(int n, int m){
-            this.leftCorner = new Int2(n, m);
-            this.rightCorner = new Int2(0, 0);
+            this.corners = new int[] {n, m, 0, 0};
         }
 
-        public void add(Int2 val){
-            if(val.i < leftCorner.i && val.j <= leftCorner.j){
-                leftCorner = val;
-            }else if(val.i <= leftCorner.i && val.j < leftCorner.j){
-                leftCorner = val;
-            }
+        public Area(int i, int j,int n, int m){
+            this.corners = new int[] {i, j, i, j};
+        }
 
-            if(val.i > rightCorner.i && val.j >= rightCorner.j){
-                rightCorner = val;
-            }else if(val.i >= rightCorner.i && val.j > rightCorner.j){
-                rightCorner = val;
+        public void add(Int2 val) {
+            if ((val.i > corners[2] && val.j >= corners[3]) || (val.i >= corners[2] && val.j > corners[3])) {
+                corners[2] = val.i;
+                corners[3] = val.j;
             }
         }
 
-        public int[] convertArray(){
-            int[] array = new int[4];
-            array[0] = leftCorner.i;
-            array[1] = leftCorner.j;
-            array[2] = rightCorner.i;
-            array[3] = rightCorner.j;
-            return array;
+        public int[] getCorners() {
+            return corners;
         }
 
     }
@@ -122,7 +110,6 @@ public class Solution {
             this.i = i;
             this.j = j;
         }
-
 
         @Override
         public boolean equals(Object o) {
