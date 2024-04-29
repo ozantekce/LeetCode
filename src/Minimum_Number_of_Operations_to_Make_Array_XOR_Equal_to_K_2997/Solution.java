@@ -13,34 +13,22 @@ public class Solution {
 
 
     public static int minOperations(int[] nums, int k) {
-
         int c = 0;
-        for (int i = 0; i < nums.length; i++) {
-            c ^= nums[i];
+
+        for (int num : nums) {
+            c ^= num;
         }
 
-        // 001
-        // 100
+        int xorResult = c ^ k;
 
-        // 1100
-        // 111
-
-        String bitsK = Integer.toBinaryString(k);
-        String bitsC = Integer.toBinaryString(c);
-
-        int l = Math.max(bitsK.length(), bitsC.length());
         int res = 0;
-
-
-        for (int i = 0; i < l; i++) {
-            char bitC = i < bitsC.length() ? bitsC.charAt(bitsC.length() - 1 - i) : '0';
-            char bitK = i < bitsK.length() ? bitsK.charAt(bitsK.length() - 1 - i) : '0';
-            if(bitC != bitK){
-                res++;
-            }
+        while (xorResult != 0) {
+            res += xorResult & 1;
+            xorResult >>= 1;
         }
 
         return res;
     }
+
 
 }
