@@ -13,12 +13,11 @@ public class Solution {
     }
 
 
-    private static int[] forLeafs;
+
 
     public static int[] sumOfDistancesInTree(int n, int[][] edges){
 
-        int [] mainTable = new int[n];
-        forLeafs = new int[n];
+        int [] res = new int[n];
         HashMap<Int2, int[]> subTrees = new HashMap<>();
 
         int[][] normalizedEdges = new int[n][];
@@ -45,7 +44,7 @@ public class Solution {
 
 
         for (int i = 0; i < n; i++) {
-            mainTable[i] = tree(i, subTrees, normalizedEdges);
+            res[i] = tree(i, subTrees, normalizedEdges);
         }
 
 /*
@@ -53,7 +52,7 @@ public class Solution {
             System.out.println(p.getKey()+" -> " + Arrays.toString(p.getValue()));
         }
 */
-        return mainTable;
+        return res;
     }
 
 
@@ -62,12 +61,6 @@ public class Solution {
         int[] children = normalizedEdges[root];
         int value = 0;
 
-        if(normalizedEdges[root].length == 1){
-            int child = normalizedEdges[root][0];
-            if(forLeafs[child] != 0){
-                return forLeafs[child];
-            }
-        }
 
         for (int subRoot : children) {
             Int2 subTree = new Int2(root, subRoot);
@@ -82,9 +75,6 @@ public class Solution {
             value += subTreeFields[0] + subTreeFields[1];
         }
 
-        if(normalizedEdges[root].length == 1){
-            forLeafs[normalizedEdges[root][0]] = value;
-        }
 
         return value;
     }
@@ -95,8 +85,11 @@ public class Solution {
         int size = 1;
 
         Int2 subtree = new Int2(mainRoot, subRoot);
+        Int2 temp;
         if (subTrees.containsKey(subtree)) {
             return subTrees.get(subtree);
+        }else if(normalizedEdges[mainRoot].length == 1 && subTrees.containsKey(temp = new Int2(-1, subRoot))){
+            return subTrees.get(temp);
         }
 
         for (int i = 0; i < normalizedEdges[subRoot].length; i++) {
@@ -109,8 +102,11 @@ public class Solution {
         }
         int[] res = new int[]{size, value};
 
-
         subTrees.put(subtree, res);
+        if(normalizedEdges[mainRoot].length == 1){
+            temp = new Int2(-1, subRoot);
+            subTrees.put(temp, res);
+        }
         return res;
     }
 
@@ -134,7 +130,7 @@ public class Solution {
 
         @Override
         public int hashCode() {
-            return Objects.hash(i, j);
+            return i+j;
         }
 
         @Override
@@ -145,5 +141,7 @@ public class Solution {
                     '}';
         }
     }
+
+
 
 }
