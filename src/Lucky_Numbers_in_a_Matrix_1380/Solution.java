@@ -24,20 +24,18 @@ public class Solution {
         Arrays.fill(minRows, Integer.MAX_VALUE);
         Arrays.fill(maxCols, Integer.MIN_VALUE);
 
-        HashSet<Integer> temp = new HashSet<>();
-
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[0].length; col++) {
                 maxCols[col] = Math.max(maxCols[col], matrix[row][col]);
                 minRows[row] = Math.min(minRows[row], matrix[row][col]);
             }
-            temp.add(minRows[row]);
         }
 
         List<Integer> res = new ArrayList<>();
-        for (int i = 0; i < maxCols.length; i++) {
-            if(!temp.add(maxCols[i])){
-                res.add(maxCols[i]);
+        for (int i = 0; i < minRows.length; i++) {
+            for (int j = 0; j < maxCols.length; j++) {
+                if(minRows[i] == maxCols[j])
+                    res.add(minRows[i]);
             }
         }
 
