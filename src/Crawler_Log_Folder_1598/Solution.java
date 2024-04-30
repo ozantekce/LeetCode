@@ -12,25 +12,16 @@ public class Solution {
 
     public static int minOperations(String[] logs) {
 
-        Stack<String> stack = new Stack<>();
-
-        for (int i = 0; i < logs.length; i++) {
-
-            String log = logs[i];
-
-            if(log.charAt(0) == '.'){
-                if(log.charAt(1) == '.'){
-                    if(!stack.isEmpty()){
-                        stack.pop();
-                    }
-                }
-            }else{
-                stack.push(log);
+        int res = 0;
+        for (String log : logs) {
+            if (log.charAt(1) == '.') {
+                if (res != 0)
+                    res--;
+            } else if (log.charAt(0) != '.') {
+                res++;
             }
-
         }
-
-        return stack.size();
+        return res;
     }
 
 
