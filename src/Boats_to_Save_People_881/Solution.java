@@ -18,20 +18,16 @@ public class Solution {
 
     public static int numRescueBoats(int[] people, int limit) {
 
-        Arrays.sort(people);
+        countingSort(people, limit);
 
         int res = 0;
         int p0 = 0;
         int p1 = people.length-1;
 
-        while (p0 <= p1){
+        while (p0 < p1){
             int weightMin = people[p0];
             int weightMax = people[p1];
-
             int total = weightMax + weightMin;
-            if(p0 == p1){
-                total -= weightMax;
-            }
 
             if(total > limit){
                 res++;
@@ -43,8 +39,31 @@ public class Solution {
             }
         }
 
+        if(p0 == p1){
+            res++;
+        }
 
         return res;
+    }
+
+
+    private static int[] countingSort(int[] people, int limit){
+
+        int [] counter = new int[limit+1];
+
+        for (int i = 0; i < people.length; i++) {
+            counter[people[i]]++;
+        }
+
+        int k = 0;
+        for (int i = 0; i <= limit; i++) {
+            for (int j = 0; j < counter[i]; j++) {
+                people[k++] = i;
+            }
+        }
+
+
+        return people;
     }
 
 
