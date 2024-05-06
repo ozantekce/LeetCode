@@ -125,7 +125,9 @@ public class Solution {
 
     public static ListNode removeNodes(ListNode head) {
 
-        if(head == null) return null;
+        if(head == null){
+            return null;
+        }
 
         head = reverseList(head);
         ListNode currentNode = head;
@@ -133,11 +135,13 @@ public class Solution {
         int currentVal, nextVal;
         while (currentNode != null){
             currentVal = currentNode.val;
-            if(currentNode.next ==null) break;
+            if(currentNode.next ==null){
+                break;
+            }
             nextVal = currentNode.next.val;
 
             if(currentVal > nextVal){
-                removeNextNode(currentNode);
+                currentNode.next = currentNode.next.next;
             }else{
                 currentNode = currentNode.next;
             }
@@ -147,25 +151,16 @@ public class Solution {
     }
 
 
-
-
-    public static ListNode reverseList(ListNode head) {
-        return reverseList(null, head);
-    }
-
-    private static ListNode reverseList(ListNode prev, ListNode current){
-        if (current == null) {
-            return prev;
+    private static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+        while (current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
         }
-        ListNode next = current.next;
-        current.next = prev;
-        return reverseList(current, next);
-    }
-
-    public static void removeNextNode(ListNode current) {
-        if (current != null && current.next != null) {
-            current.next = current.next.next;
-        }
+        return prev;
     }
 
 
