@@ -7,42 +7,25 @@ public class Solution {
 
     }
 
-
     public static ListNode doubleIt(ListNode head) {
-
-        head = reverseList(head);
-        execute(head, 0);
-        head = reverseList(head);
-
+        int remainder = execute(head);
+        if(remainder != 0){
+            ListNode newHead = new ListNode(remainder);
+            newHead.next = head;
+            head = newHead;
+        }
         return head;
     }
 
-    private static void execute(ListNode head, int remainder){
-        int baseValue = head.val * 2 + remainder;
+    private static int execute(ListNode head){
+        if(head == null)
+            return 0;
+        int baseValue = head.val * 2 + execute(head.next);
         int value = baseValue % 10;
-        remainder = baseValue / 10;
+        int remainder = baseValue / 10;
         head.val = value;
-        if(head.next != null)
-            execute(head.next, remainder);
-        else if(remainder != 0){
-            head.next = new ListNode();
-            execute(head.next, remainder);
-        }
+        return remainder;
     }
-
-
-    private static ListNode reverseList(ListNode head) {
-        ListNode prev = null;
-        ListNode current = head;
-        while (current != null) {
-            ListNode next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-        return prev;
-    }
-
 
     public static class ListNode {
         int val;
