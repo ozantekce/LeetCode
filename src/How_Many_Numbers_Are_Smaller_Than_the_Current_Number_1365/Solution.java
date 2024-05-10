@@ -4,31 +4,28 @@ import java.util.Arrays;
 
 public class Solution {
 
+    public static void main(String[] args) {
+
+
+        System.out.println(Arrays.toString(smallerNumbersThanCurrent(new int[]{8, 1, 2, 2, 3})));
+
+    }
     
-    
-    public int[] smallerNumbersThanCurrent(int[] nums) {
+    public static int[] smallerNumbersThanCurrent(int[] nums) {
 
         int [] counter = new int[101];
-        int [] memory = new int[101];
-
-        Arrays.fill(memory, -1);
+        int [] cumulative = new int[101];
 
         for (int i = 0; i < nums.length; i++) {
             counter[nums[i]]++;
         }
 
-        for (int i = 0; i < nums.length; i++) {
+        for (int i = 1; i <= 100; i++) {
+            cumulative[i] += counter[i-1] + cumulative[i-1];
+        }
 
-            if(memory[nums[i]] != -1){
-                nums[i] = memory[nums[i]];
-                continue;
-            }
-            int count = 0;
-            for (int j = nums[i]-1; j >= 0; j--) {
-                count += counter[j];
-            }
-            memory[nums[i]] = count;
-            nums[i] = count;
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = cumulative[nums[i]];
         }
 
         
