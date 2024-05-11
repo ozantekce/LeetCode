@@ -15,40 +15,36 @@ public class Solution {
     }
 
     public static int[] kthSmallestPrimeFraction(int[] arr, int k) {
-        int [] rev = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            rev[rev.length-1-i] = arr[i];
-        }
-
-        return justTrying(arr, rev, k);
+        return heapSolution(arr, k);
     }
 
-    private static int[] justTrying(int[] arr, int[] rev, int k){
-
+    private static int[] heapSolution(int[] arr, int k){
+        int n = arr.length-1;
         if(k == 1){
-            return new int[]{arr[0], rev[0]};
+            return new int[]{arr[0], arr[n]};
         }
-
         boolean[][] added = new boolean[1001][1001];
-        MinHeap<Int2> pointers = new MinHeap<>((arr.length * (arr.length-1)) / 2);
-        pointers.insert(new Int2(0,0, 1d*arr[0]/rev[0]));
+        MinHeap<Int2> pointers = new MinHeap<>((arr.length * (arr.length-1)) / 4);
+        pointers.insert(new Int2(0, n, 1d*arr[0]/arr[n]));
         int counter = 0;
         while (true){
             Int2 selected;
             selected = pointers.remove();
-            if(selected.i+1 < arr.length && !added[selected.i+1][selected.j]){
-                Int2 child = new Int2(selected.i+1, selected.j, 1d * arr[selected.i+1] / rev[selected.j]);
+            int childI = selected.i + 1;
+            int childJ = selected.j - 1;
+            if(childI <= n && !added[childI][selected.j] && childI < selected.j){
+                Int2 child = new Int2(childI, selected.j, 1d * arr[childI] / arr[selected.j]);
                 pointers.insert(child);
-                added[selected.i+1][selected.j] = true;
+                added[childI][selected.j] = true;
             }
-            if(selected.j+1 < arr.length && !added[selected.i][selected.j+1]){
-                Int2 child = new Int2(selected.i, selected.j+1, 1d * arr[selected.i] / rev[selected.j+1]);
+            if(childJ >= 0 && !added[selected.i][childJ] && selected.i < childJ){
+                Int2 child = new Int2(selected.i, childJ, 1d * arr[selected.i] / arr[childJ]);
                 pointers.insert(child);
-                added[selected.i][selected.j+1] = true;
+                added[selected.i][childJ] = true;
             }
             counter++;
             if(counter == k){
-                return new int[]{arr[selected.i], rev[selected.j]};
+                return new int[]{arr[selected.i], arr[selected.j]};
             }
         }
 
@@ -57,14 +53,14 @@ public class Solution {
 
     private static class Int2 implements Comparable<Int2>{
 
-        double val;
-        int i, j;
 
+        int i, j;
+        double v;
 
         public Int2(int i, int j, double val) {
             this.i = i;
             this.j = j;
-            this.val = val;
+            this.v = val;
         }
 
 
@@ -86,12 +82,13 @@ public class Solution {
             return "Int2{" +
                     "i=" + i +
                     ", j=" + j +
+                    ", v=" + v +
                     '}';
         }
 
         @Override
         public int compareTo(Int2 other) {
-            return Double.compare(this.val, other.val);
+            return Double.compare(this.v, other.v);
         }
 
     }
@@ -106,7 +103,6 @@ public class Solution {
         @SuppressWarnings("unchecked")
         public MinHeap(int capacity) {
             this.CAPACITY = capacity;
-            // We create an array of type Comparable and cast it to T[]
             heap = (T[]) new Comparable[capacity];
         }
 
@@ -116,7 +112,6 @@ public class Solution {
                 int current = size;
                 size++;
 
-                // Compare using compareTo method provided by Comparable interface
                 while (current != 0 && heap[current].compareTo(heap[getParentIndex(current)]) < 0) {
                     swap(heap, current, getParentIndex(current));
                     current = getParentIndex(current);
@@ -173,6 +168,11 @@ public class Solution {
             return size == 0;
         }
 
+        @Override
+        public String toString() {
+            return Arrays.toString(Arrays.copyOf(heap, size));
+        }
+
         public void printer() {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < Math.pow(2, i) && j + Math.pow(2, i) < size; j++) {
@@ -182,8 +182,6 @@ public class Solution {
             }
         }
     }
-
-
 
 
 }
