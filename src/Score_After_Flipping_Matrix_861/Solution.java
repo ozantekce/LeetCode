@@ -7,6 +7,9 @@ public class Solution {
 
     public static void main(String[] args) {
 
+        System.out.println(matrixScore(new int[][]{{0,0,1,1},{1,0,1,0},{1,1,0,0}}));
+        System.out.println(matrixScore(new int[][]{{0,1},{1,1}}));
+
     }
 
 
@@ -15,54 +18,42 @@ public class Solution {
         int n = grid.length;
         int m = grid[0].length;
 
+        boolean [] rowFlips = new boolean[n];
+        boolean [] colFlips = new boolean[m];
         // 0,2,4,8,..
 
         // maximize rows
         for (int i = 0; i < n; i++) {
-            int[] row = grid[i];
-            if(row[0] != 1){
-                for (int j = 0; j < m; j++) {
-                    row[j] = row[j] == 0 ? 1 : 0;
-                }
-            }
+            rowFlips[i] = grid[i][0] != 1;
         }
-        
+
         //maximize cols
-        for (int i = 0; i < m; i++) {
+        for (int col = 0; col < m; col++) {
             int numberOfOnes = 0;
-            int numberOfZeros = 0;
-            for (int j = 0; j < n; j++) {
-                if(grid[j][i] == 1){
+            for (int row = 0; row < n; row++) {
+                if(grid[row][col] == (rowFlips[row] ? 0 : 1)){
                     numberOfOnes++;
-                }else{
-                    numberOfZeros++;
                 }
             }
-            
-            if(numberOfZeros > numberOfOnes){
-                for (int j = 0; j < n; j++) {
-                    grid[j][i] = grid[j][i] == 0 ? 1 : 0;
-                }
+            if(n > 2 * numberOfOnes){
+                colFlips[col] = true;
             }
-            
         }
 
         int total = 0;
         for (int i = 0; i < n; i++) {
             int val = 0;
-            int mul = 1;
-            for (int j = m-1; j >= 0; j--) {
-                val += mul * grid[i][j];
-                mul <<= 1;
+            for (int j = 0; j < m; j++) {
+                int num = grid[i][j];
+                if(rowFlips[i] ^ colFlips[j]){
+                    num = num == 0 ? 1 : 0;
+                }
+                val <<= 1;
+                val += num;
             }
             total += val;
         }
 
-        for (int i = 0; i < n; i++) {
-            System.out.println(Arrays.toString(grid[i]));
-        }
-        
-        
         return total;
     }
 
