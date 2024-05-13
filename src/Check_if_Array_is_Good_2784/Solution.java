@@ -22,7 +22,7 @@ public class Solution {
             max = Math.max(max, nums[i]);
         }
 
-        if(counter[max] != 2)
+        if(counter[max] != 2 || nums.length != max+1)
             return false;
 
         for (int i = 1; i < max; i++) {
