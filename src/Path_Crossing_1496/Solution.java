@@ -14,30 +14,26 @@ public class Solution {
 
     }
 
-
+    private static int[] funcs = new int[]{
+            10000,  // index 0
+            0, 0, 0, 0, 0, 0, 0, 0,
+            1,  // index 9
+            0, 0, 0, 0,
+            -1, // index 14
+            0, 0, 0,
+            -10000  // index 18
+    };
 
     public static boolean isPathCrossing(String path) {
 
         HashSet<Integer> visited = new HashSet<>();
-        int x = 0;
-        int y = 0;
-
+        int pos = 0;
         visited.add(0);
         for (int i = 0; i < path.length(); i++) {
-            char d = path.charAt(i);
-            if(d == 'N'){
-                y++;
-            }else if(d == 'S'){
-                y--;
-            }else if(d == 'E'){
-                x++;
-            }else{
-                x--;
-            }
-            if(!visited.add((x << 14) + y)){
+            pos += funcs[path.charAt(i) - 'E'];
+            if(!visited.add(pos)){
                 return true;
             }
-
         }
 
         return false;
