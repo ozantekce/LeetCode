@@ -20,6 +20,9 @@ public class Solution {
             int num1 = nums1[p1];
             int num2 = nums2[p2];
 
+            if(num1 > nums2[nums2.length-1] || num2 > nums1[nums1.length-1])
+                return -1;
+
             if(num1 == num2){
                 return num1;
             }else if(num1 < num2){
