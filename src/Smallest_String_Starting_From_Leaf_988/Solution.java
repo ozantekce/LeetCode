@@ -11,22 +11,29 @@ public class Solution {
         return smallestFromLeaf(root, new StringBuilder()).toString();
     }
 
-    public StringBuilder smallestFromLeaf(TreeNode root, StringBuilder current) {
+    public String smallestFromLeaf(TreeNode root, StringBuilder current) {
 
         char c = (char) ('a' + root.val);
         current.append(c);
         if(root.left == null && root.right == null){
-            return current.reverse();
+            StringBuilder res = new StringBuilder(current);
+            return res.reverse().toString();
         }
 
         if(root.left != null && root.right !=null){
-            StringBuilder left = smallestFromLeaf(root.left,  new StringBuilder(current));
-            StringBuilder right = smallestFromLeaf(root.right,  new StringBuilder(current));
-            return  left.compareTo(right) < 0 ? left : right;
+            String left = smallestFromLeaf(root.left,  current);
+            current.setLength(current.length() - 1);
+            String right = smallestFromLeaf(root.right,  current);
+            current.setLength(current.length() - 1);
+            return left.compareTo(right) < 0 ? left : right;
         }else if(root.left != null){
-            return smallestFromLeaf(root.left,  new StringBuilder(current));
+            String left = smallestFromLeaf(root.left,  current);
+            current.setLength(current.length() - 1);
+            return left;
         }else{
-            return smallestFromLeaf(root.right,  new StringBuilder(current));
+            String right = smallestFromLeaf(root.right,  current);
+            current.setLength(current.length() - 1);
+            return right;
         }
 
     }
