@@ -20,12 +20,8 @@ public class Solution {
             return new int[]{0,0};
         }
         int[] amountAndNeed = new int[]{root.val,1};
-
-        TreeNode left = root.left;
-        TreeNode right = root.right;
-
-        int[] leftValues = findRes(left);
-        int[] rightValues = findRes(right);
+        int[] leftValues = findRes(root.left);
+        int[] rightValues = findRes(root.right);
 
         amountAndNeed[0] += leftValues[0] + rightValues[0];
         amountAndNeed[1] += leftValues[1] + rightValues[1];
