@@ -17,28 +17,34 @@ public class Solution {
     public static long maximumValueSum(int[] nums, int k, int[][] edges) {
         long total = 0;
 
-        int [] increases = new int[nums.length];
+
+        long totalIncrease = 0;
+        int countOfPositiveValues = 0;
+
+        int minPositiveValue = Integer.MAX_VALUE;
+        int maxNonPositiveValue = Integer.MIN_VALUE;
+
         for (int i = 0; i < nums.length; i++) {
             total += nums[i];
-            increases[i] = ((nums[i] ^ k) - nums[i]);
-        }
-
-        Arrays.sort(increases);
-
-        long res = total;
-        for (int i = increases.length-1; i-1 >= 0; i-=2) {
-
-            long temp = res + increases[i] + increases[i-1];
-
-            if(temp > res){
-                res = temp;
+            int increase = ((nums[i] ^ k) - nums[i]);
+            if(increase > 0){
+                countOfPositiveValues++;
+                totalIncrease += increase;
+                minPositiveValue = Math.min(minPositiveValue, increase);
             }else{
-                return res;
+                maxNonPositiveValue = Math.max(maxNonPositiveValue, increase);
             }
-
         }
 
-        return res;
+        if(countOfPositiveValues % 2 == 0){
+            return total + totalIncrease;
+        }
+
+        long res1 = total + totalIncrease - minPositiveValue;
+        long res2 = total + totalIncrease + maxNonPositiveValue;
+
+        return  Math.max(res1, res2);
+
     }
 
 
