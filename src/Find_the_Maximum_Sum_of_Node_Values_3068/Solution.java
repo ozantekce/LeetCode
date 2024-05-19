@@ -16,21 +16,19 @@ public class Solution {
 
     public static long maximumValueSum(int[] nums, int k, int[][] edges) {
         long total = 0;
+
+        int [] increases = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
             total += nums[i];
+            increases[i] = ((nums[i] ^ k) - nums[i]);
         }
 
-        Int2 [] flippeds = new Int2[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            flippeds[i] = new Int2(nums[i], (nums[i] ^ k));
-        }
-        Arrays.sort(flippeds);
+        Arrays.sort(increases);
 
         long res = total;
-        for (int i = 0; i < flippeds.length && i+1 < flippeds.length; i+=2) {
+        for (int i = increases.length-1; i-1 >= 0; i-=2) {
 
-            long temp = res - flippeds[i].oldValue + flippeds[i].newValue
-                    - flippeds[i+1].oldValue + flippeds[i+1].newValue;
+            long temp = res + increases[i] + increases[i-1];
 
             if(temp > res){
                 res = temp;
@@ -43,21 +41,6 @@ public class Solution {
         return res;
     }
 
-    private static class Int2 implements Comparable<Int2>
-    {
-        public int oldValue;
-        public int newValue;
-
-        public Int2(int oldValue, int newValue) {
-            this.oldValue = oldValue;
-            this.newValue = newValue;
-        }
-
-        @Override
-        public int compareTo(Int2 o) {
-            return -Integer.compare((newValue - oldValue), (o.newValue - o.oldValue));
-        }
-    }
 
 
 
