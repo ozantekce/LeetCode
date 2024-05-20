@@ -15,10 +15,10 @@ public class Solution {
 
 
     public static long maximumValueSum(int[] nums, int k, int[][] edges) {
+
         long total = 0;
-
-
         long totalIncrease = 0;
+
         int countOfPositiveValues = 0;
 
         int minPositiveValue = Integer.MAX_VALUE;
