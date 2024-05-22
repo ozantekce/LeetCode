@@ -1,6 +1,5 @@
 package Palindrome_Partitioning_131;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class Solution {
@@ -9,21 +8,26 @@ public class Solution {
     public static void main(String[] args) {
 
         System.out.println(partition("aab"));
+        System.out.println(partition("cdd"));
 
     }
 
     public static List<List<String>> partition(String s) {
+
         List<List<String>> result = new ArrayList<>();
         find(s,0,new ArrayList<>(),result);
+
         return result;
     }
 
 
     private static void find(String s, int i, List<String> current, List<List<String>> result){
+
         if(i >= s.length()){
             result.add(new ArrayList<>(current));
             return;
         }
+
         for (int j = i; j < s.length(); j++) {
             if(isPalindrome(s, i, j)){
                 current.add(s.substring(i, j+1));
@@ -31,6 +35,7 @@ public class Solution {
                 current.remove(current.size()-1);
             }
         }
+
     }
 
     public static boolean isPalindrome(String s, int first, int last) {
@@ -46,6 +51,7 @@ public class Solution {
         }
         return isPalindrome;
     }
+
 
 
 }
