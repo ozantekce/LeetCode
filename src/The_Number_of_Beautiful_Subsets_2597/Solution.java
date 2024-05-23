@@ -1,5 +1,8 @@
 package The_Number_of_Beautiful_Subsets_2597;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class Solution {
 
 
@@ -11,37 +14,32 @@ public class Solution {
 
 
     public static int beautifulSubsets(int[] nums, int k) {
-        return recursive(nums,new int[nums.length],0,0,k);
+        
+        return recursive(nums,new int[1001+k]  ,0, k);
     }
 
 
-    private static int recursive(int[] nums, int[] array,int i, int size, int k){
+    private static int recursive(int[] nums, int[] map, int i, int k){
 
         if(i>=nums.length)
             return 0;
 
         int res = 0;
         for (; i < nums.length; i++) {
-            array[size++] = nums[i];
-            if(isbeautiful(array, size, k)){
+            map[nums[i]]++;
+            boolean isbeautiful = map[nums[i]+k] == 0 &&
+                    (nums[i] - k < 0 || map[nums[i]-k] == 0);
+
+            if(isbeautiful){
                 res++;
-                res += recursive(nums, array, i+1, size, k);
+                res += recursive(nums, map, i+1, k);
             }
-            size--;
+            map[nums[i]]--;
         }
         return res;
     }
 
-
-
-    private static boolean isbeautiful(int[] nums, int size, int k){
-        for (int j = 0; j < size-1; j++) {
-            int diff = Math.abs(nums[j] - nums[size-1]);
-            if(diff == k)
-                return false;
-        }
-        return true;
-    }
+    
 
 
 }
