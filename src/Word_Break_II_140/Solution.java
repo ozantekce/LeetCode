@@ -17,32 +17,28 @@ public class Solution {
     public static List<String> wordBreak(String s, List<String> wordDict) {
         Result.clear();
         HashSet<String> set = new HashSet<>(wordDict);
-        recursive(0, s,set, new StringBuilder());
+        recursive(0, s, set, new StringBuilder());
         return Result;
     }
 
     private static List<String> Result = new ArrayList<>();
-    private static void recursive(int i, String s, HashSet<String> set, StringBuilder list){
+    private static void recursive(int i, String s, HashSet<String> set, StringBuilder current){
 
-        if(i == s.length()){
-            list.setLength(list.length() - 1);
-            Result.add(list.toString());
-            list.append(" ");
-            return;
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
+        int startFrom = i;
         for (; i < s.length(); i++) {
-            stringBuilder.append(s.charAt(i));
-            String str = stringBuilder.toString();
+            String str = s.substring(startFrom, i+1);
             if(set.contains(str)){
-                list.append(str);
-                list.append(" ");
-                recursive(i+1, s, set, list);
-                list.setLength(list.length() - str.length() - 1);
+                current.append(str);
+                if(i+1 == s.length()){
+                    Result.add(current.toString());
+                    current.setLength(current.length() - str.length());
+                    break;
+                }
+                current.append(" ");
+                recursive(i+1, s, set, current);
+                current.setLength(current.length() - str.length() - 1);
             }
         }
-
     }
 
 
