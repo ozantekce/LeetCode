@@ -8,7 +8,8 @@ public class Solution {
     public static void main(String[] args) {
 
         System.out.println(checkRecord(2));
-        System.out.println(checkRecord(1));
+        //System.out.println(checkRecord(1));
+        //System.out.println(checkRecord(10));
         System.out.println(checkRecord(10101));
 
     }
@@ -16,25 +17,30 @@ public class Solution {
     private static final int MOD = 1000000007;
     public static int checkRecord(int n) {
 
-        int [][][] memory = new int[n+1][2][3];
+        int [][] prevRound = new int[2][3];
+        int [][] nextRound = new int[2][3];
 
-        memory[1][0][0] = 1;
-        memory[1][1][0] = 1;
-        memory[1][0][1] = 1;
+        prevRound[0][0] = 1;
+        prevRound[1][0] = 1;
+        prevRound[0][1] = 1;
 
         for (int i = 1; i < n; i++) {
-
             for (int j = 0; j < 2; j++) {
-
                 for (int k = 0; k < 3; k++) {
-
-                    if(memory[i][j][k] == 0)
+                    if(prevRound[j][k] == 0)
                         continue;
-                    memory[i+1][j][0] =  (memory[i+1][j][0] + memory[i][j][k]) % MOD;
-                    if(j+1 < 2) memory[i+1][j+1][0] = (memory[i+1][j+1][0] + memory[i][j][k]) % MOD;
-                    if(k+1 < 3) memory[i+1][j][k+1] = (memory[i][j][k] + memory[i+1][j][k+1]) % MOD;
+                    nextRound[j][0] = (nextRound[j][0] + prevRound[j][k]) % MOD;
+                    if(j+1 < 2) nextRound[j+1][0] = (nextRound[j+1][0] + prevRound[j][k]) % MOD;
+                    if(k+1 < 3) nextRound[j][k+1] = (nextRound[j][k+1] + prevRound[j][k]) % MOD;
                 }
-
+            }
+            int [][] temp = prevRound;
+            prevRound = nextRound;
+            nextRound = temp;
+            for (int j = 0; j < 2; j++) {
+                for (int k = 0; k < 3; k++) {
+                    nextRound[j][k] = 0;
+                }
             }
 
         }
@@ -42,7 +48,7 @@ public class Solution {
         int res = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 3; j++) {
-                res =  (res + memory[n][i][j]) % MOD;
+                res =  (res + prevRound[i][j]) % MOD;
             }
         }
 
