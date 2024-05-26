@@ -9,8 +9,8 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        //System.out.println(wordBreak("catsanddog", new ArrayList<>(Arrays.asList("cat", "cats", "and", "sand", "dog"))));
-        //System.out.println(wordBreak("leetcoded", new ArrayList<>(Arrays.asList("leet","code"))));
+        System.out.println(wordBreak("catsanddog", new ArrayList<>(Arrays.asList("cat", "cats", "and", "sand", "dog"))));
+        System.out.println(wordBreak("leetcode", new ArrayList<>(Arrays.asList("leet","code"))));
         System.out.println(wordBreak("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", new ArrayList<>(Arrays.asList("a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"))));
     }
 
@@ -33,8 +33,10 @@ public class Solution {
                 if(i+1 == s.length()){
                     return true;
                 }
-                if(recursive(i+1, s, set))
+                if(recursive(i+1, s, set)){
                     return true;
+                }
+
             }
         }
         Memory[startFrom] = true;
