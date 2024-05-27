@@ -27,8 +27,6 @@ public class Solution {
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < 2; j++) {
                 for (int k = 0; k < 3; k++) {
-                    if(prevRound[j][k] == 0)
-                        continue;
                     nextRound[j][0] = (nextRound[j][0] + prevRound[j][k]) % MOD;
                     if(j+1 < 2) nextRound[j+1][0] = (nextRound[j+1][0] + prevRound[j][k]) % MOD;
                     if(k+1 < 3) nextRound[j][k+1] = (nextRound[j][k+1] + prevRound[j][k]) % MOD;
