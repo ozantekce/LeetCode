@@ -10,14 +10,20 @@ public class Solution {
     }
 
     public static int appendCharacters(String s, String t) {
-        int p = 0;
-        for (int i = 0; i < s.length() && p < t.length(); i++) {
-            if(s.charAt(i) == t.charAt(p)){
-                p++;
-            }
-        }
-        return t.length() - p;
-    }
 
+        int p_s = 0;
+        int p_t = 0;
+
+        char[] s_chars = s.toCharArray();
+        char[] t_chars = t.toCharArray();
+
+        while (p_s < s.length() && p_t < t.length()){
+            if(s_chars[p_s] == t_chars[p_t]){
+                p_t++;
+            }
+            p_s++;
+        }
+        return t.length() - p_t;
+    }
 
 }
