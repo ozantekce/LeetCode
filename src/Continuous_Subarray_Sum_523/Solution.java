@@ -9,6 +9,7 @@ public class Solution {
 
 
         System.out.println(checkSubarraySum(new int[]{23,2,4,6,7},6));
+        System.out.println(checkSubarraySum(new int[]{5,0,0,0},3));
         //System.out.println(checkSubarraySum(new int[]{23,2,6,4,7},6));
         //System.out.println(checkSubarraySum(new int[]{23,2,6,4,7},13));
         System.out.println(checkSubarraySum(new int[]{23,2,4,6,6},7));
@@ -35,6 +36,7 @@ public class Solution {
         }
 
         HashMap<Integer, Integer> map = new HashMap<>();
+
         for (int i = 0; i < n; i++) {
             prefSums[i] %= k;
             if(i != 0 && prefSums[i] == 0)
@@ -50,6 +52,7 @@ public class Solution {
 
         return false;
     }
+
 
 
 
