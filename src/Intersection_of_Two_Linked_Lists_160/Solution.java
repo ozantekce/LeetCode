@@ -46,7 +46,7 @@ public class Solution {
 
         int move = Math.min(sizeOfA, sizeOfB);
         for (int i = 0; i < move; i++) {
-            if(currentA.val == currentB.val)
+            if(currentA == currentB)
                 return currentA;
             currentA = currentA.next;
             currentB = currentB.next;
