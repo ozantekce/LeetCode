@@ -45,7 +45,7 @@ public class Solution {
             if(currentPos - lastPos >= force){
                 m--;
                 lastPos = currentPos;
-                if (m <= 1) return true;
+                if (m == 1) return true;
             }
         }
         return false;

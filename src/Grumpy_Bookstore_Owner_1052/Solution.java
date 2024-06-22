@@ -19,25 +19,32 @@ public class Solution {
         int min = 0;
         int windowValue = 0;
         int maxWindowValue = 0;
-        for (int i = 0; i < customers.length; i++) {
-            if(grumpy[i]==0){
+
+        for (int i = 0; i < minutes; i++) {
+            boolean isGrumpy = grumpy[i] == 1;
+            if(!isGrumpy){
+                min += customers[i];
+            }else{
+                windowValue += customers[i];
+                maxWindowValue = Math.max(windowValue,maxWindowValue);
+            }
+
+        }
+
+        for (int i = minutes; i < customers.length; i++) {
+
+            boolean isGrumpy = grumpy[i] == 1;
+            if(!isGrumpy){
                 min += customers[i];
             }
-            if(i<minutes){
-                if(grumpy[i]==1){
-                    windowValue+=customers[i];
-                    maxWindowValue = windowValue;
-                }
-            }else{
 
-                if(grumpy[i-minutes]==1){
-                    windowValue -= customers[i-minutes];
-                }
-                if(grumpy[i]==1){
-                    windowValue += customers[i];
-                }
+            //int removeFromWindowIndex = i - minutes;
+            if(grumpy[i - minutes] == 1){
+                windowValue -= customers[i - minutes];
+            }
+            if(isGrumpy){
+                windowValue += customers[i];
                 maxWindowValue = Math.max(windowValue,maxWindowValue);
-
             }
 
         }
