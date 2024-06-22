@@ -17,19 +17,15 @@ public class Solution {
     public static int numberOfSubarrays(int[] nums, int k) {
 
         int n = nums.length;
-
-        for (int i = 0; i < n; i++) {
-            nums[i] = nums[i] % 2 == 0 ? 0 : 1;
-        }
-
         int [] prefSums = new int[n];
-        prefSums[0] = nums[0];
+
+        prefSums[0] = (nums[0] % 2 == 0 ? 0 : 1);
         for (int i = 1; i < n; i++) {
-            prefSums[i] = prefSums[i-1] + nums[i];
+            prefSums[i] = prefSums[i-1] + (nums[i] % 2 == 0 ? 0 : 1);
         }
 
-        //System.out.println(Arrays.toString(prefSums));
         int [] prefSumCounts = new int[prefSums[n-1] + 1];
+        //System.out.println(Arrays.toString(prefSums));
         for (int i = 0; i < n; i++) {
             prefSumCounts[prefSums[i]]++;
         }
@@ -41,14 +37,9 @@ public class Solution {
                 res++;
             }
             int need = prefSums[i] - k;
-
             if(need >= 0){
                 res += prefSumCounts[need];
-                if(need == prefSums[i])
-                    res--;
             }
-
-
         }
 
         return res;
