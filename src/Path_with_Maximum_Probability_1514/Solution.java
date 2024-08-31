@@ -16,73 +16,67 @@ public class Solution {
         if(start_node == end_node)
             return 1;
 
-        HashMap<Integer, Node> nodeMap = new HashMap<>();
+        boolean [] settled = new boolean[n];
+        double [] finalCosts = new double[n];
+        finalCosts[start_node] = 1;
+
+        List<List<Edge>> normalizedEdges = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            normalizedEdges.add(new ArrayList<>());
+        }
+
         for (int i = 0; i < edges.length; i++) {
             int [] edge = edges[i];
             int first = edge[0];
             int second = edge[1];
             double prob = succProb[i];
-
-            Node firstNode;
-            if(nodeMap.containsKey(first)){
-                firstNode = nodeMap.get(first);
-            }else{
-                firstNode = new Node();
-                nodeMap.put(first, firstNode);
-            }
-
-            Node secondNode;
-            if(nodeMap.containsKey(second)){
-                secondNode = nodeMap.get(second);
-            }else{
-                secondNode = new Node();
-                nodeMap.put(second, secondNode);
-            }
-
-            firstNode.edges.add(new Edge(secondNode, prob));
-            secondNode.edges.add(new Edge(firstNode, prob));
+            normalizedEdges.get(first).add(new Edge(second, prob));
+            normalizedEdges.get(second).add(new Edge(first, prob));
         }
 
-        if(!nodeMap.containsKey(end_node) || !nodeMap.containsKey(start_node))
+        if(normalizedEdges.get(start_node).isEmpty() ||
+                normalizedEdges.get(end_node).isEmpty())
             return 0;
 
-        nodeMap.get(start_node).prob = 1;
+        PriorityQueue<Edge> frontier = new PriorityQueue<>();
+        frontier.add(new Edge(start_node, 1));
 
-        Queue<Node> frontier = new ArrayDeque<>();
-        frontier.add(nodeMap.get(start_node));
+        while (!frontier.isEmpty()) {
 
-        while (!frontier.isEmpty()){
-            Node current = frontier.poll();
-            List<Edge> edgeList = current.edges;
-            for (Edge edge : edgeList) {
-                Node to = edge.to;
-                double value = current.prob * edge.prob;
-                if (value > to.prob) {
-                    to.prob = value;
-                    frontier.add(to);
+            Edge oldEdge = frontier.remove();
+            int from = oldEdge.to;
+            if(from == end_node) return oldEdge.cost;
+            if (settled[from]) continue;
+            settled[from] = true;
+
+            List<Edge> currentEdges = normalizedEdges.get(from);
+            for (Edge edge : currentEdges) {
+                if (settled[edge.to]) continue;
+                double cost = finalCosts[from] * edge.cost;
+                if (cost > finalCosts[edge.to]){
+                    finalCosts[edge.to] = cost;
+                    frontier.add(new Edge(edge.to, finalCosts[edge.to]));
                 }
             }
-
         }
 
-        return nodeMap.get(end_node).prob;
+        return finalCosts[end_node];
     }
 
-    
-    private static  class Node{
-        double prob;
-        List<Edge> edges;
-        public Node(){
-            this.edges = new ArrayList<>();
-        }
-    }
-    
-    private static class Edge {
-        Node to;
-        double prob;
-        public Edge(Node to, double prob) {
+
+
+    private static class Edge implements Comparable<Edge>{
+        int to;
+        double cost;
+
+        public Edge(int to, double cost){
             this.to = to;
-            this.prob = prob;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return Double.compare(o.cost, this.cost);
         }
     }
     
