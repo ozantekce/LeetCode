@@ -45,6 +45,7 @@ class Solution {
     public static class Trie {
 
         private final Node root;
+        private int [] memory;
 
         public Trie() {
             root = new Node();
@@ -62,20 +63,22 @@ class Solution {
         }
 
         public int solve(String s) {
-            memory = new int[s.length()];
-            Arrays.fill(memory, -1);
             char[] chars = s.toCharArray();
+            memory = new int[chars.length];
+            Arrays.fill(memory, -1);
+
             return solveRecursive(chars, 0);
         }
 
-        private int [] memory;
+
 
         public int solveRecursive(char[] chars, int i){
 
             if(memory[i] != -1)
                 return memory[i];
 
-            int j = i;
+            int started = i;
+
             int counter = 0;
             Node current = root;
             int currentWordLength = 0;
@@ -86,6 +89,7 @@ class Solution {
             for (; i < chars.length; i++) {
                 char c = chars[i];
 
+                // return to root
                 if(current != root && root.hasChild(c)){
                     min = Math.min(min,
                             counter + currentWordLength - badCasePoint + solveRecursive(chars,i));
@@ -118,7 +122,7 @@ class Solution {
             counter += currentWordLength - badCasePoint;
 
 
-            return memory[j] = Math.min(counter, min);
+            return memory[started] = Math.min(counter, min);
         }
 
         private static class Node {
