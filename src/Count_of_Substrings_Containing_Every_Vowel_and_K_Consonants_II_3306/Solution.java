@@ -4,8 +4,8 @@ public class Solution {
 
     public static void main(String[] args) {
 
-        //System.out.println(countOfSubstrings("iqeaouqi", 2));
-        System.out.println(countOfSubstrings("eeuiaoiucu", 0));
+        System.out.println(countOfSubstrings("ieaouqqieaouqq", 1));
+        //System.out.println(countOfSubstrings("aeiou", 0));
         //System.out.println(countOfSubstrings("ieaouqqieaouqq", 1));
         //System.out.println(countOfSubstrings("aeiou", 0));
         //System.out.println(countOfSubstrings("ieaouqqieaouqq", 1));
@@ -15,95 +15,64 @@ public class Solution {
     }
 
 
-    private static int[] nonVowelPrefixSum;
-    private static int[] prefixA, prefixE, prefixI, prefixO, prefixU;
-
     public static long countOfSubstrings(String word, int k) {
-
         int n = word.length();
-        nonVowelPrefixSum = new int[n + 1];
-        prefixA = new int[n + 1];
-        prefixE = new int[n + 1];
-        prefixI = new int[n + 1];
-        prefixO = new int[n + 1];
-        prefixU = new int[n + 1];
 
+        int[][] closestVowelIndices = new int[6][n];
+
+        for (int v = 0; v < 5; v++) closestVowelIndices[v][n - 1] = n;
+        int idx = getIndex(word.charAt(n - 1));
+        closestVowelIndices[idx][n - 1] = n - 1;
+
+        for (int i = n - 2; i >= 0; i--) {
+            idx = getIndex(word.charAt(i));
+            for (int v = 0; v < 5; v++) closestVowelIndices[v][i] = closestVowelIndices[v][i + 1];
+            closestVowelIndices[idx][i] = i;
+        }
+
+        int[] nonVowelPrefixSums = new int[n + 1];
+        int[] minIndexMapForPrefixSum = new int[n + 1];
+        int[] maxIndexMapForPrefixSum = new int[n + 1];
         for (int i = 0; i < n; i++) {
-            char c = word.charAt(i);
-            boolean isVowel;
-            prefixA[i + 1] = prefixA[i] + (c == 'a' ? 1 : 0);
-            prefixE[i + 1] = prefixE[i] + (c == 'e' ? 1 : 0);
-            prefixI[i + 1] = prefixI[i] + (c == 'i' ? 1 : 0);
-            prefixO[i + 1] = prefixO[i] + (c == 'o' ? 1 : 0);
-            prefixU[i + 1] = prefixU[i] + (c == 'u' ? 1 : 0);
-            isVowel = (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
-            nonVowelPrefixSum[i + 1] = nonVowelPrefixSum[i] + (isVowel ? 0 : 1);
+            boolean isVowel = getIndex(word.charAt(i)) != 5;
+            int sum = nonVowelPrefixSums[i + 1] = nonVowelPrefixSums[i] + (isVowel ? 0 : 1);
+            if (minIndexMapForPrefixSum[sum] == 0) minIndexMapForPrefixSum[sum] = i + 1;
+            maxIndexMapForPrefixSum[sum] = i + 1;
         }
 
         long res = 0;
-        for (int i = 0; i <= word.length() - 5 - k; i++) {
-            int right = word.length() - i;
-            int left = 5 + k;
-            int maxSize = -1;
-            int minSize = -1;
+        for (int start = 0; start <= n - 5 - k; start++) {
 
-            if (!hasAllVowels(i, right) || getNonVowelCount(i, right) < k) {
-                break;
+            int maxNonVowelCount = nonVowelPrefixSums[n] - nonVowelPrefixSums[start];
+            if (maxNonVowelCount < k) break;
+
+            int minIndexForAllVowels = -1;
+            for (int v = 0; v < 5; v++) {
+                minIndexForAllVowels = Math.max(closestVowelIndices[v][start], minIndexForAllVowels);
             }
+            if (minIndexForAllVowels == n) break;
 
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                int nonVowelCount = getNonVowelCount(i, mid);
-                if (nonVowelCount < k) {
-                    left = mid + 1;
-                } else if (nonVowelCount > k) {
-                    right = mid - 1;
-                } else {
-                    boolean hasAllVowels = hasAllVowels(i, mid);
-                    if (hasAllVowels) maxSize = mid;
-                    left = mid + 1;
-                }
-            }
+            int targetSum = k + nonVowelPrefixSums[start];
 
-            if (maxSize == -1) continue;
+            int minIndexForTargetSum = Math.max(minIndexMapForPrefixSum[targetSum], minIndexForAllVowels + 1);
+            int maxIndexForTargetSum = maxIndexMapForPrefixSum[targetSum];
 
-            minSize = maxSize;
-            right = maxSize;
-            left = 5 + k;
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                int nonVowelCount = getNonVowelCount(i, mid);
-                if (nonVowelCount < k) {
-                    left = mid + 1;
-                } else if (nonVowelCount > k) {
-                    right = mid - 1;
-                } else {
-                    boolean hasAllVowels = hasAllVowels(i, mid);
-                    if (hasAllVowels) {
-                        minSize = mid;
-                        right = mid - 1;
-                    } else {
-                        left = mid + 1;
-                    }
-                }
-            }
+            if (minIndexForTargetSum > maxIndexForTargetSum) continue;
 
-            res += (maxSize - minSize + 1);
+            res += (maxIndexForTargetSum - minIndexForTargetSum + 1);
         }
-
         return res;
     }
 
-    private static boolean hasAllVowels(int start, int size) {
-        int end = start + size;
-        return (prefixA[end] - prefixA[start] > 0) &&
-                (prefixE[end] - prefixE[start] > 0) &&
-                (prefixI[end] - prefixI[start] > 0) &&
-                (prefixO[end] - prefixO[start] > 0) &&
-                (prefixU[end] - prefixU[start] > 0);
+    private static int getIndex(char c) {
+        return switch (c) {
+            case 'a' -> 0;
+            case 'e' -> 1;
+            case 'i' -> 2;
+            case 'o' -> 3;
+            case 'u' -> 4;
+            default -> 5;
+        };
     }
 
-    private static int getNonVowelCount(int start, int size) {
-        return nonVowelPrefixSum[start + size] - nonVowelPrefixSum[start];
-    }
 }
