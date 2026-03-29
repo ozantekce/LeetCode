@@ -18,7 +18,7 @@ public class Solution {
         
         long l_n = n;
         long left = 0;
-        long right = (l_n +1)/2;
+        long right = (l_n + 1) / 2;
         long mid;
         
         while (true) {            
