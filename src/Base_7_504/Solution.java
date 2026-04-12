@@ -16,12 +16,12 @@ public class Solution {
         if(isNegative) num *= -1;
         StringBuilder stringBuilder = new StringBuilder();
         
-        while (num > 0) {            
+        while (num > 0) {
             int r = num % 7;
             stringBuilder.append(r);
             num = num / 7;
-            System.out.println(num +" "+ r);
         }
+        
         if(isNegative) stringBuilder.append('-');
         
         return stringBuilder.reverse().toString();
